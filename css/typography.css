@@ -1,0 +1,20 @@
+/* Fonts require a link to fonts.googleapis.com to function. */
+/* <link href="https://fonts.googleapis.com/css?family=Open+Sans|Ruthie" rel="stylesheet">  */
+
+
+/* Fonts */
+.ruthie{font-family: 'Ruthie', sans-serif;}
+.sans-serif{font-family: 'Open Sans', sans-serif;}
+/* font size */
+.font-size-0_5em{font-size: 0.5em;}
+.font-size-1_5em{font-size: 1.5em;}
+.font-size-2em{font-size: 2em;}
+
+/* style */
+.font-allcaps{font-variant: small-caps;}
+.font-bold{ font-weight: bold;}
+.font-light{ font-weight: lighter;}
+.font-italic{font-style: italic;}
+.font-oblique{font-style: oblique;}
+.font-underscore{text-decoration: underline;}
+.font-striketrough{text-decoration: line-through;}

@@ -1,0 +1,19 @@
+/* Stripping some anoytining features from common tags */
+
+body, p {margin: 0px;}
+li, ul,ol {list-style: none;padding-left: 0;}
+a {
+  text-decoration: none;
+  cursor: pointer;
+  outline: 0; 
+  color: inherit;
+}
+
+.overflow-y-auto{overflow-y: auto;}
+.overflow-x-auto{overflow-x: auto;}
+.overflow-hidden{overflow: hidden;}
+
+
+.test{
+  border: 1px solid red;
+}
