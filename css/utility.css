@@ -5,7 +5,7 @@ li, ul,ol {list-style: none;padding-left: 0;}
 a {
   text-decoration: none;
   cursor: pointer;
-  outline: 0; 
+  outline: 0;
   color: inherit;
 }
 
@@ -16,4 +16,10 @@ a {
 
 .test{
   border: 1px solid red;
+}
+.margin-1em{
+  margin: 1em;
+}
+.margin-top-05em{
+  margin-top: 0.5em;
 }

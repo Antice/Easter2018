@@ -1,8 +1,10 @@
 /* page init classes */
 
 .viewport-static{
-  height: 100vh;
-  width: 100vw;
+  height: 98vh;
+  width: 98vw;
+  margin-left: 1vw;
+  margin-top: 1vh;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -28,7 +30,7 @@
 }
 .grid-layout-sidebar-right{
   display: grid;
-  grid-template: 3em 1fr 2em / 1fr 40vw;
+  grid-template: 3em calc(98vh - 5em) 2em / 59vw 39vw;
   grid-template-areas:
   "nav nav"
   "main sidebar"
@@ -52,8 +54,7 @@
 }
 .grid-main{
   grid-area: main;
-  min-height: calc(100vh - 5.5em);
-}
+  }
 .grid-sidebar-2{
   grid-area: sidebar2;
 }
@@ -66,17 +67,23 @@
 /* Grid */
 .grid-layout-vertical-split{
   display: grid;
-  grid-template:
+  height:100%;
+  width: 100%;
+  grid-template: 1fr / 1fr 1fr;
+  grid-template-areas:
   "right left"
 }
 .grid-layout-horizontal-split{
   display: grid;
-  grid-template:
+  height:100%;
+  width: 100%;
+  grid-template: 1fr 1fr / 1fr;
+  grid-template-areas:
   "top"
   "Bottom"
 }
 .grid-area-right{
-  grid-area: right;
+  grid-area:right;
 }
 .grid-area-left{
   grid-area: left;
@@ -85,7 +92,7 @@
   grid-area: top;
 }
 .grid-area-bottom{
-  grid-area: bottom;
+  grid-area: Bottom;
 }
 
 /* Flexbox */
@@ -108,12 +115,16 @@
 /* these classes need the flexboxes to have a defined volume, or they will not do anything at all. consider using margins to fix the boxes into place instead*/
 .justify-right{
   justify-content: flex-end;
+  margin-left: auto;
 }
 .justify-center{
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .justify-left{
   justify-content: flex-start;
+  margin-right: auto;
 }
 .align-top{
 align-content: flex-start;
@@ -123,6 +134,7 @@ align-content: center;
 }
 .align-bottom{
 align-content: flex-end;
+margin-top:auto;
 }
 /* Aligns the flexbox lines rather than the content boxes */
 .align-items-top{
@@ -150,9 +162,20 @@ align-content: flex-end;
   text-align: right;
 }
 
-
 /* Sizes */
 
-.height-100p{
-
+.height-100p{flex
+height: 100%;
 }
+.height-1_5em{
+  height: 1.5em;
+}
+.width-100p{
+  width:100%;
+}
+/* gutters */
+.grid-gutter-03em{
+  grid-gap: 0.3em;
+}
+
+/* margins */

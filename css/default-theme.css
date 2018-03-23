@@ -50,5 +50,8 @@
 /* Expanded default palette by Ken */
 
 /* Borders */
-.border-sidebar-right{ border-left: solid 3px red;}
-.border{border: solid 3px red;}
+.border-right{border-right: groove 0.5em var(--color-3)}
+.border-left{border-left: groove 0.5em var(--color-3)}
+.border-top{border-top: groove 0.5em var(--color-3)}
+.border-bottom{border-bottom: solid 0.1em var(--color-3)}
+.border{border: groove 0.4em var(--color-3);}
