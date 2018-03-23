@@ -29,3 +29,22 @@
 - Party system with multiple characters.
 - Persistent world by adding a server backend.
 - Multiple player interactions with the same dungeon.
+
+
+
+use this later:   
+//the map:  
+/*  
+var pos = new Array ();  
+pos[0] = new Array ();  
+pos[0][0] = new Array();  
+pos[0][0][0] = 'w','w','w','w','f';  
+*/  
+/* tiletypes.  
+tile border types in order of north, east, south and west.  
+w = Wall,   
+d = door  
+o = open space  
+
+type: cave, hallway, room,  
+*/  
