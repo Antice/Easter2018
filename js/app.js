@@ -38,32 +38,52 @@ var playerWeaponStr = 4;
 var playerAttack = function(){
   //roll to hit
   if (d10() <= enemyDefenceVal - playerWeaponStr){
-    console.log('Miss!');
+    return('Miss!');
   }
   else{
-    console.log('You hit him')
     // how much damage?
     var hit = d10() + playerWeaponStr - enemyDefenceVal;
-    enemyHP = enemyHP - hit;
+    if(hit >= enemyHP){
+      enemyHP = 0;
+      return 'He is dead'
     }
-  // is it dead yet?
-  if (enemyHP < 1){
-    console.log('The enemy has died.')
+    else{
+      enemyHP = enemyHP - hit;
+      return('You hit him for:' + hit);
+      }
+    }
   }
-}
 
 var enemyAttack = function(){
   if (d10() <= playerDefenceVal - enemyWeaponStr){
-    console.log('Miss!');
-  }
+    return('Miss!');
+    }
   else{
-    console.log('You got hit')
     // how much damage?
     var hit = d10() + enemyWeaponStr - playerDefenceVal;
-    playerHP = playerHP - hit;
+    if(hit > playerHP){
+      playerHP = 0;
+      return 'you died'
+      }
+    else{
+      playerHP = playerHP - hit;
+      return('You got hit for' + hit);
+      }
     }
-  // dead yet?
-  if (playerHP < 1){
-    console.log('Oh noes! You died!!!')
   }
-}
+
+//some onclick functionality to get the battle started:
+
+function choseAttack(){
+  if (enemyHP == 0 || playerHP == 0){
+    document.getElementById('log').innerHTML = 'Dead people can\'t fight'
+    }
+  else{
+    var current = 'You strike:' + '<br>';
+    current = current + playerAttack() + '<br>';
+    current = current + enemyAttack() + '<br>';
+    current = current + 'Player HP:' + playerHP + '<br>';
+    current = current + 'Enemy HP:' + enemyHP + '<br>';
+    document.getElementById('log').innerHTML = current;
+    }
+  }
