@@ -20,12 +20,32 @@
       <!-- Sidebar -->
       <div class="grid-sidebar border">
         <button type="button" name="attack" onclick="choseAttack()">Attack</button>
+        <div>
 
+        </div> <!-- Movement buttons -->
+          <table>
+            <tr>
+              <td></td>
+              <td><button type="button" name="North" class="directionButton">N</button></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><button type="button" name="West" class="directionButton">W</button></td>
+              <td></td>
+              <td><button type="button" name="East" class="directionButton">E</button></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><button type="button" name="South" class="directionButton">S</button></td>
+              <td></td>
+            </tr>
+          </table>
+        </div> <!-- Movement buttons end -->
       </div>
       <!-- sidebar end -->
       <!-- content -->
       <div class="grid-main overflow-y-auto">
-        <div id="log" class="color-primary-1">Output <br>
+        <div id="log" class="color-primary-1">Output<br>
         </div>
       </div>
       <!-- content end -->

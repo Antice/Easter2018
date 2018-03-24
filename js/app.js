@@ -7,23 +7,11 @@
 var d10 = function(){
   return Math.floor(Math.random()* 10 + 1);
 }
-// testing the roller
-var do10 = function(num){
-  for (var x = 0; x < num; x++){
-    console.log(d10());
-  }
-}
 
 // Tile generation functions
 var roomtype = function(){
   return roomTypes[d10()];
 }
-
-
-
-
-
-// game engine
 
 // battle:
 var enemyHP = 100;
@@ -33,50 +21,45 @@ var playerHP = 100;
 var playerDefenceVal = 4;
 var playerWeaponStr = 4;
 
+// Game engine
 
-// attacking
-var playerAttack = function(){
-  //roll to hit
-  if (d10() <= enemyDefenceVal - playerWeaponStr){
-    return('Miss!');
+//Resolving Combat
+function attack(attack,defence){
+  if (attack + d10() > defence + d10()){
+    return true;
   }
   else{
-    // how much damage?
-    var hit = d10() + playerWeaponStr - enemyDefenceVal;
-    if(hit >= enemyHP){
-      enemyHP = 0;
-      return 'He is dead'
-    }
-    else{
-      enemyHP = enemyHP - hit;
-      return('You hit him for:' + hit);
-      }
-    }
+    return false;
   }
 
-var enemyAttack = function(){
-  if (d10() <= playerDefenceVal - enemyWeaponStr){
-    return('Miss!');
-    }
+}
+
+function hit(attack,defence,actor1,actor2){
+  var damage = attack + d10() - defence;
+  if (damage <= 1){
+    console.log( actor1 +'\'s strike barely scratches the' + ' ' + actor2 + ', ' + 'dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    return damage;
+  }
+  else if (damage > 1 && damage <= 3) {
+    console.log(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a shallow cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    return damage;
+  }
+  else if (damage > 3 && damage <= 5) {
+    console.log(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a serious cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    return damage;
+  }
   else{
-    // how much damage?
-    var hit = d10() + enemyWeaponStr - playerDefenceVal;
-    if(hit > playerHP){
-      playerHP = 0;
-      return 'you died'
-      }
-    else{
-      playerHP = playerHP - hit;
-      return('You got hit for' + hit);
-      }
-    }
+    console.log(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'inflicting a deep wound, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    return damage;
   }
+}
 
-//some onclick functionality to get the battle started:
+
+
 
 function choseAttack(){
   if (enemyHP == 0 || playerHP == 0){
-    document.getElementById('log').innerHTML = 'Dead people can\'t fight'
+    document.getElementById('log').innerHTML = 'Dead people can\'t fight back'
     }
   else{
     var current = 'You strike:' + '<br>';

@@ -20,3 +20,8 @@
   margin-left: auto;
   margin-right: 2em;
 }
+
+.directionButton{
+  width: 3em;
+  height: 3em;
+}
