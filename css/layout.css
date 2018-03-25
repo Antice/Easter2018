@@ -67,32 +67,42 @@
 /* Grid */
 .grid-layout-vertical-split{
   display: grid;
-  height:100%;
   width: 100%;
-  grid-template: 1fr / 1fr 1fr;
+  height: 100%;
+  grid-template: 1fr / 1fr 2fr;
   grid-template-areas:
-  "right left"
+  "left right"
 }
-.grid-layout-horizontal-split{
+.grid-layout-horizontal-split-6_4{
   display: grid;
-  height:100%;
-  width: 100%;
+  height: 100%;
   grid-template: 1fr 1fr / 1fr;
+  grid-template-areas:
+  "top"
+  "Bottom"
+}
+.grid-layout-horizontal-split-6_4{
+  display: grid;
+  height: 100%;
+  grid-template: 6fr 4fr / 1fr;
   grid-template-areas:
   "top"
   "Bottom"
 }
 .grid-area-right{
   grid-area:right;
+  height: 100%;
 }
 .grid-area-left{
   grid-area: left;
 }
 .grid-area-top{
   grid-area: top;
+  border: solid 1px red;
 }
 .grid-area-bottom{
   grid-area: Bottom;
+  border: solid 1px orange;
 }
 
 /* Flexbox */
@@ -173,9 +183,20 @@ height: 100%;
 .width-100p{
   width:100%;
 }
+
+.height-45vh{
+  height: 45vh;
+}
 /* gutters */
 .grid-gutter-03em{
   grid-gap: 0.3em;
 }
 
 /* margins */
+
+.margin-left-1vh{
+  margin-left: 1vh;
+}
+.margin-top-1vh{
+  margin-top: 10vh;
+}
