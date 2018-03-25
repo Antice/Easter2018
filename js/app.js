@@ -1,5 +1,29 @@
-// Data:
 
+
+// character sheet:
+var pName = '';
+var maxPHp
+var pHp = 0;
+var pAtk = 0;
+var pDef = 0;
+var pWpn = new array['',0];
+var pArm = new array['',0];
+var inv = ['','','','','','','','','',''];
+var Torchtime = 0;
+
+
+// setting up the character sheet at game start:
+function newGame(){
+  pName = Querry('what should I call you?'):
+  maxPHp = 50 + d10() * 5;
+  pHp = naxPHp;
+  pWpn = '';
+  pArm = '';
+  inv[0] = 'Torch'
+  inv[1] = 'health potion'
+  inv[2] = 'Mysterious note'
+
+}
 
 // Utility classes:
 
@@ -24,7 +48,13 @@ var playerWeaponStr = 4;
 // Game engine
 
 //Resolving Combat
-function attack(attack,defence){
+
+// Enemy stats
+
+
+
+
+var attack = function(attack,defence){
   if (attack + d10() > defence + d10()){
     return true;
   }
@@ -33,8 +63,8 @@ function attack(attack,defence){
   }
 
 }
-
-function hit(attack,defence,actor1,actor2){
+// resolving an attack
+var hit = function(attack,defence,actor1,actor2){
   var damage = attack + d10() - defence;
   if (damage <= 1){
     console.log( actor1 +'\'s strike barely scratches the' + ' ' + actor2 + ', ' + 'dealing' + ' ' + damage + ' ' + 'HP worth of damage');
@@ -53,6 +83,21 @@ function hit(attack,defence,actor1,actor2){
     return damage;
   }
 }
+
+// player choice:
+
+function buttonPress(action){
+if (action == 'attack'){
+  // combat round
+}
+
+}
+
+
+
+
+
+
 
 
 
