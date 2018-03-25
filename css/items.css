@@ -22,20 +22,25 @@
 }
 
 .directionButton{
+  text-align: center;
   width: 25px;
   height:25px;
+  background-color: var(--color-2);
+  border-top:  1px solid var(--color-1);
+  border-left:  1px solid var(--color-1);
+  border-bottom: 1px solid var(--color-3);
+  border-right: 1px solid var(--color-3);
 }
 .actionbuttons{
-  width:25px;
+  width: 55px;
   height: 25px;
+  background-color: var(--color-2);
+  border-top:  1px solid var(--color-1);
+  border-left:  1px solid var(--color-1);
+  border-bottom: 1px solid var(--color-3);
+  border-right: 1px solid var(--color-3);
 }
 
 .control-buttons{
   margin-top: 5px;
-  margin-left: 5px;
 }
-/* .movement-buttons{
-  font-size: 2vh;
-  width: 10em;
-  height: 10em;
-}*/

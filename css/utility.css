@@ -8,7 +8,6 @@ a {
   outline: 0;
   color: inherit;
 }
-
 .overflow-y-auto{overflow-y: auto;}
 .overflow-x-auto{overflow-x: auto;}
 .overflow-hidden{overflow: hidden;}

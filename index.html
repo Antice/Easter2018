@@ -11,52 +11,57 @@
   </head>
   <body class="theme-default-dark">
     <!-- Main -->
-    <div class="main-layout-grid border">
-      <div class="log-window">
-        Log
+    <div class="game-layout-grid border">
+      <!-- Display -->
+      <div class="log-window border-bottom">
+        <!-- game naration and action feedback goes here -->
       </div>
+      <!-- Display end -->
+      <!-- Inventory management -->
       <div class="inventory-area">
         <table>
           <tr>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
+            <td class="inventory-slot">1.<td class="item-field" onclick="PlayerInput('use',0)" id="Slot1"></td> </div></td>
+            <td class="inventory-slot">2.<td class="item-field" onclick="PlayerInput('use',1)" id="Slot2"></td> </div></td>
+            <td class="inventory-slot">3.<td class="item-field" onclick="PlayerInput('use',2)" id="Slot3"></td> </div></td>
           </tr>
           <tr>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
+            <td class="inventory-slot">4.<td class="item-field" onclick="PlayerInput('use',3)" id="Slot4"></td> </div></td>
+            <td class="inventory-slot">5.<td class="item-field" onclick="PlayerInput('use',4)" id="Slot5"></td> </div></td>
+            <td class="inventory-slot">6.<td class="item-field" onclick="PlayerInput('use',5)" id="Slot6"></td> </div></td>
           </tr>
           <tr>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" id="Slot1">moreitem</td> </div></td>
+            <td class="inventory-slot">7.<td class="item-field" onclick="PlayerInput('use',6)" id="Slot7"></td> </div></td>
+            <td class="inventory-slot">8.<td class="item-field" onclick="PlayerInput('use',7)" id="Slot8"></td> </div></td>
+            <td class="inventory-slot">9.<td class="item-field" onclick="PlayerInput('use',8)" id="Slot9"></td> </div></td>
           </tr>
         </table>
       </div>
+      <!-- inventory end -->
+      <!-- Controls -->
       <div class="button-area">
         <table class="control-buttons">
           <tr>
             <td></td>
-            <td><button type="button" id="north" class="directionButton">N</button></td>
+            <td><button type="button" class="directionButton" onclick="PlayerInput('move','N')">N</button></td>
             <td></td>
-            <td> <button type="button" name="button">fight</button> </td>
+            <td><button type="button" class="actionbuttons" onclick="PlayerInput('attack')">Attack</button> </td>
           </tr>
           <tr>
-            <td><button type="button" id="west" class="directionButton ">W</button></td>
+            <td><button type="button" class="directionButton" onclick="PlayerInput('move','W')">W</button></td>
             <td></td>
-            <td><button type="button" id="east" class="directionButton">E</button></td>
-            <td> <button type="button" name="button">fight</button> </td>
+            <td><button type="button" class="directionButton" onclick="PlayerInput('move','E')">E</button></td>
+            <td><button type="button" class="actionbuttons"  onclick="PlayerInput('search')">Search</button> </td>
           </tr>
           <tr>
             <td></td>
-            <td><button type="button" id="south" class="directionButton">S</button></td>
+            <td><button type="button" class="directionButton" onclick="PlayerInput('move','S')">S</button></td>
             <td></td>
-            <td> <button type="button" name="button">fight</button> </td>
+            <td><button type="button" class="actionbuttons" onclick="PlayerInput('action')">Action</button> </td>
           </tr>
         </table>
       </div>
-
+      <!-- Control end -->
     </div>
     <!-- scripts -->
     <script type="text/javascript" src="/js/app.js">

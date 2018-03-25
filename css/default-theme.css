@@ -1,8 +1,8 @@
 :root{
-  --color-0: #A77B00;
-  --color-1: #E8C04E;
+  --color-0: #A77B00;  /* Primary */
+  --color-1: #E8C04E;  /* Primary light */
   --color-2: #CF9F15;
-  --color-3: #7D5C00;
+  --color-3: #7D5C00;  /* Primary dark */
   --color-4: #473500;
   --color-5: #C7C7C7;
   --color-6: #181818;
@@ -53,5 +53,5 @@
 .border-right{border-right: groove 0.5em var(--color-3)}
 .border-left{border-left: groove 0.5em var(--color-3)}
 .border-top{border-top: groove 0.5em var(--color-3)}
-.border-bottom{border-bottom: solid 0.1em var(--color-3)}
-.border{border: groove 0.4em var(--color-3);}
+.border-bottom{border-bottom: solid 2px var(--color-3)}
+.border{border: solid 4px var(--color-3);}

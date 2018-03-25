@@ -2,7 +2,7 @@
 
 // character sheet:
 var pName = '';
-var maxPHp
+var maxPHp = 0;
 var pHp = 0;
 var pAtk = 0;
 var pDef = 0;
@@ -14,9 +14,9 @@ var Torchtime = 0;
 
 // setting up the character sheet at game start:
 function newGame(){
-  pName = Querry('what should I call you?');
+  pName = prompt('what should I call you?');
   maxPHp = 50 + d10() * 5;
-  pHp = naxPHp;
+  pHp = maxPHp;
   pWpn = '';
   pArm = '';
   inv[0] = 'Torch'
@@ -85,14 +85,30 @@ var hit = function(attack,defence,actor1,actor2){
 
 // player choice:
 
-function buttonPress(action,option){
+function PlayerInput(action,option){
   if (action == 'attack'){
   // combat round
   }
   else if (action == 'use'){
+
+    console.log(inv[option]);
     // Let's use the item stored in inventory slot option
   }
   else if (action == 'move') {
-
+    if (option == 'N'){
+      console.log('You walked north')
+    }
+    else if (option == 'E'){
+      console.log('You walked east')
+    }
+    else if (option == 'S'){
+      console.log('You walked south')
+    }
+    else if (option == 'W'){
+      console.log('You walked west') 
+    }
+    else {
+      console.log('This should not happen')
+    }
   }
 }

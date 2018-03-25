@@ -1,9 +1,11 @@
 /* custom layout for game */
 
-.main-layout-grid{
+.game-layout-grid{
   display:grid;
-  height: 600px;
+  height: 500px;
   width: 600px;
+  margin-left: calc((100vw - 600px) / 2);
+  margin-top: calc((100vh - 500px) / 2);
   grid-template-rows: repeat(6 * 100px);
   grid-template-columns: repeat(6 * 100px);
   grid-template-areas:
@@ -17,21 +19,19 @@
 
 .log-window{
   grid-area: x;
-  background-color: red;
   width: 600px;
-  height: 500px;
+  height: 400px;
 }
 .button-area{
   grid-area: c;
   width: 150px;
   height: 100px;
-  background-color: green;
 }
 .inventory-area{
   grid-area: i;
   width: 450px;
   height: 100px;
-  background-color: blue;
+  margin-top: 3px;
 }
 .inventory-slot{
   margin-left: 2px;
@@ -42,7 +42,7 @@
 .item-field{
   width: 130px;
   height: 27px;
-  border: 1px solid green;
+  border: 1px solid blue;
   background-color: black;
   color: white;
 }
