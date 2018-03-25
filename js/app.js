@@ -6,15 +6,15 @@ var maxPHp
 var pHp = 0;
 var pAtk = 0;
 var pDef = 0;
-var pWpn = new array['',0];
-var pArm = new array['',0];
+var pWpn = ['',0];
+var pArm = ['',0];
 var inv = ['','','','','','','','','',''];
 var Torchtime = 0;
 
 
 // setting up the character sheet at game start:
 function newGame(){
-  pName = Querry('what should I call you?'):
+  pName = Querry('what should I call you?');
   maxPHp = 50 + d10() * 5;
   pHp = naxPHp;
   pWpn = '';
@@ -22,7 +22,6 @@ function newGame(){
   inv[0] = 'Torch'
   inv[1] = 'health potion'
   inv[2] = 'Mysterious note'
-
 }
 
 // Utility classes:
@@ -86,32 +85,14 @@ var hit = function(attack,defence,actor1,actor2){
 
 // player choice:
 
-function buttonPress(action){
-if (action == 'attack'){
+function buttonPress(action,option){
+  if (action == 'attack'){
   // combat round
-}
-
-}
-
-
-
-
-
-
-
-
-
-
-function choseAttack(){
-  if (enemyHP == 0 || playerHP == 0){
-    document.getElementById('log').innerHTML = 'Dead people can\'t fight back'
-    }
-  else{
-    var current = 'You strike:' + '<br>';
-    current = current + playerAttack() + '<br>';
-    current = current + enemyAttack() + '<br>';
-    current = current + 'Player HP:' + playerHP + '<br>';
-    current = current + 'Enemy HP:' + enemyHP + '<br>';
-    document.getElementById('log').innerHTML = current;
-    }
   }
+  else if (action == 'use'){
+    // Let's use the item stored in inventory slot option
+  }
+  else if (action == 'move') {
+
+  }
+}
