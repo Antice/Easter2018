@@ -24,6 +24,11 @@ function newGame(){
   inv[2] = 'Mysterious note'
 }
 
+
+// Some global variables needed to progress the game. (sorry. I know this is a bad way to do shit)
+var isEncounter = true;
+
+
 // Utility classes:
 
 //d-10
@@ -87,14 +92,19 @@ var hit = function(attack,defence,actor1,actor2){
 
 function PlayerInput(action,option){
   if (action == 'attack'){
-  // combat round
+    if (isEncounter == true){
+    console.log('You attack')
+    }
+    else{
+      console.log('Nothing there to kill')
+    }
   }
   else if (action == 'use'){
 
     console.log(inv[option]);
     // Let's use the item stored in inventory slot option
   }
-  else if (action == 'move') {
+  else if (action == 'move'){
     if (option == 'N'){
       console.log('You walked north')
     }
@@ -105,10 +115,11 @@ function PlayerInput(action,option){
       console.log('You walked south')
     }
     else if (option == 'W'){
-      console.log('You walked west') 
+      console.log('You walked west')
     }
     else {
       console.log('This should not happen')
     }
+
   }
 }
