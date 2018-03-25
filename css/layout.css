@@ -1,234 +1,48 @@
-/* page init classes */
-
-.viewport-static{
-  height: 98vh;
-  width: 98vw;
-  margin-left: 1vw;
-  margin-top: 1vh;
-  white-space: nowrap;
-  overflow: hidden;
-}
-/* basic page layouts */
-
-/* static grid layouts */
-/* Call layout type in the container, and add the coresponding set of classes for each section*/
-.grid-layout-nosidebar{
-  display: grid;
-  grid-template: 3em 1fr 2em / 100vw;
-  grid-template-areas:
-  "nav"
-  "main"
-  "footer";
-}
-.grid-layout-siderbar-left{
-  display: grid;
-  grid-template: 3em 1fr 2em / 10vw 90vw;
-  grid-template-areas:
-  "nav nav"
-  "sidebar main"
-  "footer footer";
-}
-.grid-layout-sidebar-right{
-  display: grid;
-  grid-template: 3em calc(98vh - 5em) 2em / 59vw 39vw;
-  grid-template-areas:
-  "nav nav"
-  "main sidebar"
-  "footer footer";
-}
-.grid-layout-sidebar-both{
-  display: grid;
-  grid-template: 3em 1fr 2em / 10vw 80vw 10vw;
-  grid-template-areas:
-  "nav nav nav"
-  "sidebar scontent sidebar2"
-  "footer footer footer";
-}
-
-/* grid areas */
-.grid-nav{
-  grid-area: nav;
-}
-.grid-sidebar{
-  grid-area: sidebar;
-}
-.grid-main{
-  grid-area: main;
-  }
-.grid-sidebar-2{
-  grid-area: sidebar2;
-}
-.grid-footer{
-  grid-area: footer;
-}
-/* static grid layouts end */
-
-/* dynamic layout classes */
-/* Grid */
-.grid-layout-vertical-split{
-  display: grid;
-  width: 100%;
-  height: 100%;
-  grid-template: 1fr / 1fr 2fr;
-  grid-template-areas:
-  "left right"
-}
-.grid-layout-horizontal-split-6_4{
-  display: grid;
-  height: 100%;
-  grid-template: 1fr 1fr / 1fr;
-  grid-template-areas:
-  "top"
-  "Bottom"
-}
-.grid-layout-horizontal-split-6_4{
-  display: grid;
-  height: 100%;
-  grid-template: 6fr 4fr / 1fr;
-  grid-template-areas:
-  "top"
-  "Bottom"
-}
-.grid-area-right{
-  grid-area:right;
-  height: 100%;
-}
-.grid-area-left{
-  grid-area: left;
-}
-.grid-area-top{
-  grid-area: top;
-  border: solid 1px red;
-}
-.grid-area-bottom{
-  grid-area: Bottom;
-  border: solid 1px orange;
-}
-
-/* Flexbox */
-.flex-column{
-  display: flex;
-  flex-direction: column;
-}
-.flex-row{
-  display: flex;
-  flex-direction: row;
-}
-.flex-wrap{
-  flex-wrap: wrap;
-}
-.flex-nowrap{
-  flex-wrap: nowrap;
-}
-
-/* position classes */
-/* these classes need the flexboxes to have a defined volume, or they will not do anything at all. consider using margins to fix the boxes into place instead*/
-.justify-right{
-  justify-content: flex-end;
-  margin-left: auto;
-}
-.justify-center{
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-.justify-left{
-  justify-content: flex-start;
-  margin-right: auto;
-}
-.align-top{
-align-content: flex-start;
-}
-.align-center{
-align-content: center;
-}
-.align-bottom{
-align-content: flex-end;
-margin-top:auto;
-}
-/* Aligns the flexbox lines rather than the content boxes */
-.align-items-top{
-  align-items: flex-start;
-}
-.align-items-center{
-  align-items: center;
-}
-.align-items-bottom{
-  align-items: flex-end;
-}
-/* Flexbox end */
-
-/* Text alignments. use in grids etc. */
-.text-align-center{
-  text-align: center;
-}
-.text-align-left{
-  text-align: left;
-}
-.text-align-justify{
-  text-align: justify;
-}
-.text-align-right{
-  text-align: right;
-}
-
-/* Sizes */
-
-.height-100p{flex
-height: 100%;
-}
-.height-1_5em{
-  height: 1.5em;
-}
-.width-100p{
-  width:100%;
-}
-
-.height-45vh{
-  height: 45vh;
-}
-/* gutters */
-.grid-gutter-03em{
-  grid-gap: 0.3em;
-}
-
-/* margins */
-
-.margin-left-1vh{
-  margin-left: 1vh;
-}
-.margin-top-1vh{
-  margin-top: 10vh;
-}
-
-
-
-
-
 /* custom layout for game */
 
 .main-layout-grid{
   display:grid;
   height: 600px;
-  width: 550px;
-  grid-template-rows: repeat(4 * 1fr);
-  grid-template-columns: repeat(4 * 1fr);
+  width: 600px;
+  grid-template-rows: repeat(6 * 100px);
+  grid-template-columns: repeat(6 * 100px);
   grid-template-areas:
-  " x x x"
-  " x x x"
-  " c i i"
+  "x x x x x x"
+  "x x x x x x"
+  "x x x x x x"
+  "x x x x x x"
+  "x x x x x x"
+  "c c c i i i";
 }
 
 .log-window{
   grid-area: x;
   background-color: red;
-  width: 100%;
+  width: 600px;
+  height: 500px;
 }
 .button-area{
   grid-area: c;
+  width: 150px;
+  height: 100px;
   background-color: green;
 }
 .inventory-area{
   grid-area: i;
+  width: 450px;
+  height: 100px;
   background-color: blue;
+}
+.inventory-slot{
+  margin-left: 2px;
+  font-size: 16px;
+  width: 1em;
+  text-align: left;
+}
+.item-field{
+  width: 130px;
+  height: 27px;
+  border: 1px solid green;
+  background-color: black;
+  color: white;
 }

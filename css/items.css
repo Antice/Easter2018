@@ -22,17 +22,20 @@
 }
 
 .directionButton{
-  width: 3em;
-  height: 3em;
+  width: 25px;
+  height:25px;
 }
 .actionbuttons{
-  width:5em;
-  height: 3em;
-  margin-top: 0.5em;
+  width:25px;
+  height: 25px;
 }
-.movement-buttons{
+
+.control-buttons{
+  margin-top: 5px;
+  margin-left: 5px;
+}
+/* .movement-buttons{
   font-size: 2vh;
   width: 10em;
   height: 10em;
-  margin-left: 2.5vh;
-}
+}*/
