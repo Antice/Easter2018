@@ -8,9 +8,9 @@ var pAtk = 0;
 var pDef = 0;
 var pWpn = ['',0];
 var pArm = ['',0];
-var inv = ['','','','','','','','','',''];
+var inv = ['-','-','-','-','-','-','-','-','-'];
 var Torchtime = 0;
-
+var PlayerIsAlive = false;
 
 // setting up the character sheet at game start:
 function newGame(){
@@ -22,7 +22,21 @@ function newGame(){
   inv[0] = 'Torch'
   inv[1] = 'health potion'
   inv[2] = 'Mysterious note'
+  PlayerIsAlive = true;
+  // populating the inventory screen
+  for (var i = 0; i < inv.length ; i++) {
+    document.getElementById('Slot'+ i).innerHTML = inv[i];
+  }
 }
+
+
+
+// Bladocument.getElementById('textChange').innerHTML = retVal;nk enemy encounter sheet
+var encName = '';
+var encAtk = 0;
+var encDef = 0;
+var encHp = 0;
+
 
 
 // Some global variables needed to progress the game. (sorry. I know this is a bad way to do shit)
@@ -57,7 +71,7 @@ var playerWeaponStr = 4;
 
 
 
-
+// The infamous lord of random
 var attack = function(attack,defence){
   if (attack + d10() > defence + d10()){
     return true;
@@ -65,9 +79,10 @@ var attack = function(attack,defence){
   else{
     return false;
   }
-
 }
-// resolving an attack
+
+
+// resolving Combat
 var hit = function(attack,defence,actor1,actor2){
   var damage = attack + d10() - defence;
   if (damage <= 1){
@@ -88,19 +103,32 @@ var hit = function(attack,defence,actor1,actor2){
   }
 }
 
-// player choice:
+// player Inputs:
 
 function PlayerInput(action,option){
-  if (action == 'attack'){
+  if (PlayerIsAlive == false){
+    console.log('Dead people can\'t play ball <br> Why not start a new game?')
+  }
+  else if (action == 'attack'){
     if (isEncounter == true){
-    console.log('You attack')
-    }
+      console.log('You attack')
+      encHp = encHp - hit(pAtk,encDef,pName,encName)
+      if (encHp <= 0){
+        console.log('The enemy has died');
+        isEncounter = false;
+        return;
+      }
+      pHp = pHp - hit(encAtk,pDef,encName,pName)
+        if (pHp <= 0){
+          console.log('You have died');
+          PlayerIsAlive = false;
+        }
+      }
     else{
       console.log('Nothing there to kill')
     }
   }
   else if (action == 'use'){
-
     console.log(inv[option]);
     // Let's use the item stored in inventory slot option
   }
