@@ -1,6 +1,6 @@
 
 // Some global variables needed to progress the game. (sorry. I know this is a bad way to do shit)
-
+// this stuff will be replaced by data imported from a Json file. It's all temporary now.
 // character sheet:
 var pName = '';
 var maxPHp = 0;
