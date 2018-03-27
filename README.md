@@ -1,17 +1,27 @@
 # Easter2018
 
 ## Features:
-- Single page user interface.
-- Interactive control buttons, and a text input field allowig for initiating actions.
-- Feedback window, where the user is given information about the characters suroundings and events.
+- [x]Single page user interface.
+- [x]Interactive control buttons.
+- [x]Feedback window, where the user is given information about the characters suroundings and events.
+- [ ] equipement slots and character sheet.
+- [ ] Lots of content
+    - [ ] 10 enemies.
+    - [ ] at least 5 items.
+    - [ ] some flavour text and spices.
 
 ## Game engine:
-- [ ]A chance based encounter system.
-- [x]Combat system based on die rolls and hit tables.
-- [ ]Event system that generates events based on location and time.
-- [ ]a clock that increments time, and changing some factors accordingly.
+- [ ]An encounter system.
+- [ ]Combat system based on die rolls and hit tables.
+    - [ ] Hit tables
+    - [x] Combat
 - [ ]A character system that incorporates health, hunger, and thirst.
+    - [x] Health.
+    - [ ] Hunger.
+    - [ ] Thirst.
 - [ ]A weapon system that adds modifiers to hit and dps.
+- [ ] Useable items.
+- [x] Inventory
 
 ## Feature creep wishlist:
 - [ ]procedurally generated map
@@ -29,22 +39,3 @@
 - [ ]Party system with multiple characters.
 - [ ]Persistent world by adding a server backend.
 - [ ]Multiple player interactions with the same dungeon.
-
-
-
-use this later:   
-//the map:  
-/*  
-var pos = new Array ();  
-pos[0] = new Array ();  
-pos[0][0] = new Array();  
-pos[0][0][0] = 'w','w','w','w','f';  
-*/  
-/* tiletypes.  
-tile border types in order of north, east, south and west.  
-w = Wall,   
-d = door  
-o = open space  
-
-type: cave, hallway, room,  
-*/  
