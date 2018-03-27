@@ -1,7 +1,25 @@
+//trying it with Json
+
+var charSheet = {
+	"pName": "Antice",
+	"maxPHp": 100,
+	"pHp": 50,
+	"pAtk": 1,
+	"pDef": 2,
+	"pWpn": ["Sword", 3],
+	"pArm": ["worn clothes", 0],
+	"inv": ["", "", "", "", "", "", "", "", ""],
+	"Torchtime": 0,
+	"PlayerIsAlive": false
+}
+
+
+
 
 // Some global variables needed to progress the game. (sorry. I know this is a bad way to do shit)
 // this stuff will be replaced by data imported from a Json file. It's all temporary now.
 // character sheet:
+/*
 var pName = '';
 var maxPHp = 0;
 var pHp = 0;
@@ -18,7 +36,7 @@ var encName = '';
 var encAtk = 0;     //  not always a weapon....
 var encDef = 0;     // not always armour either
 var encHp = 0;
-
+*/
 
 /* item tables:      use a 2d array?  [itemname,type,value]
 --- doing this should remove the need to have item name anywhere else, just refer to the item with item[x],
@@ -35,6 +53,7 @@ We can mess with randomizing the enemy stats a bit later on, by adding a weight 
 
 
 // setting up the character sheet at game start:
+/*
 function newGame(){
   pName = prompt('what should I call you?');
   maxPHp = 50 + d10() * 5;
@@ -51,7 +70,7 @@ function newGame(){
   }
 }
 
-
+*/
 
 
 
