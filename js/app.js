@@ -127,7 +127,7 @@ function addToLog(newLogEntry){
 // because I don't know a better way within js.
 
 function PlayerInput(action,option){
-  if (charSheet.PlayerIsAlive == false){
+  if (charSheet.PlayerIsAlive == false && option == !'Action'){
     addToLog('Dead people can\'t play ball.');
     addToLog('Why not start a new game?');
   }
@@ -170,5 +170,8 @@ function PlayerInput(action,option){
       default:
       addToLog('This should never happen!!!')
     }
+  }
+  else if (option == 'action') {
+    newGame()
   }
 }
