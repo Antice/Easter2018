@@ -24,6 +24,9 @@ var encounterStats = {
   "Lootdrop":["loot"]
 }
 
+
+
+
 // item tables: todo
 
 
@@ -53,6 +56,11 @@ function newGame(){
 
 var isEncounter = true;
 
+
+// information about the current tile, might need to do something about visual range too.
+
+//format: ground,north,east,south,west,enemy,Items[],Special[].
+// var tiledata = ['','','','','','',itemId[''],featurId['']]
 /* some temporary/under testing stuff */
 // Tile generation functions that I may or may not have time to implement.
 var roomtype = function(){
@@ -81,69 +89,86 @@ var attack = function(attack,defence){
 var hit = function(attack,defence,actor1,actor2){
   var damage = attack + d10() - defence;
   if (damage <= 1){
-    console.log( actor1 +'\'s strike barely scratches the' + ' ' + actor2 + ', ' + 'dealing' + ' ' + damage + ' ' + 'HP worth of damage');   // <-- This is such a silly way to do this.
+    addToLog( actor1 +'\'s strike barely scratches the' + ' ' + actor2 + ', ' + 'dealing' + ' ' + damage + ' ' + 'HP worth of damage');   // <-- This is such a silly way to do this.
     return damage;
   }
   else if (damage > 1 && damage <= 3) {
-    console.log(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a shallow cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    addToLog(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a shallow cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
     return damage;
   }
   else if (damage > 3 && damage <= 5) {
-    console.log(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a serious cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    addToLog(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a serious cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
     return damage;
   }
   else{
-    console.log(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'inflicting a deep wound, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
+    addToLog(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'inflicting a deep wound, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
     return damage;
   }
 }
+// log output to screen:
+// got to keep tabs on the old stuff:
+var logHistory = ['Welcome'];
+//adding new log entries:
+function addToLog(newLogEntry){
+  var logString = '';
+  logHistory.unshift( '<p>' + newLogEntry + '</p>');
+  if(logHistory.length > 20){
+  logHistory.pop();
+  }
+  for(i = 0; logHistory.length > i; i++){
+  logString = logString + logHistory[i];
+  }
+  document.getElementById('log').innerHTML = logString;
+}
+// done
 
 
 // player initiated gameturn;
-// because I don't knwo a better way within js.
+// because I don't know a better way within js.
 
 function PlayerInput(action,option){
-  if (PlayerIsAlive == false){
-    console.log('Dead people can\'t play ball <br> Why not start a new game?');
+  if (charSheet.PlayerIsAlive == false){
+    addToLog('Dead people can\'t play ball.');
+    addToLog('Why not start a new game?');
   }
   else if (action == 'attack'){
     if (isEncounter == true){
       encHp =- hit(charSheet.pAtk,encounterStats.encDef,charSheet.pName,encounterStats.encName);
       if (encounterStats.encHp <= 0){
-        console.log('The enemy has died');
+        addToLog('The enemy has died');
         isEncounter = false;
         return;
       }
       pHp =- hit(encounterStats.encAtk,charSheet.pDef,encounterStats.encName,charSheet.pName);
         if (charSheet.pHp <= 0){
-          console.log('You have died');
+          addToLog('You have died');
           charSheet.PlayerIsAlive = false;
         }
       }
     else{
-      console.log('Nothing there to kill');
+      addToLog('Nothing there to kill');
     }
   }
   else if (action == 'use'){
-    console.log(charSheet.inv[option]);
+    addToLog(charSheet.inv[option]);
     // Let's use the item stored in inventory slot option
   }
   else if (action == 'move'){
     switch (option) {
       case 'N':
-        console.log('You walked north');
+        addToLog('You walked north');
       break;
       case 'S':
-        console.log('You walked south');
+        addToLog('You walked south');
       break;
       case 'E':
-        console.log('You walked east');
+        addToLog('You walked east');
       break;
       case 'W':
-        console.log('You walked west');
+        addToLog('You walked west');
       break;
       default:
-      console.log('This should never happen!!!')
+      addToLog('This should never happen!!!')
     }
   }
 }
