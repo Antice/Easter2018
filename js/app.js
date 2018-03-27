@@ -1,78 +1,53 @@
 //trying it with Json
 
+
+
+
+//testing the stuff.
 var charSheet = {
-	"pName": "Antice",
-	"maxPHp": 100,
-	"pHp": 50,
-	"pAtk": 1,
-	"pDef": 2,
-	"pWpn": ["Sword", 3],
-	"pArm": ["worn clothes", 0],
+	"pName": "",
+	"maxPHp": 0,
+	"pHp": 0,
+	"pAtk": 0,
+	"pDef": 0,
+	"pWpn": ["", 0],
+	"pArm": ["", 0],
 	"inv": ["", "", "", "", "", "", "", "", ""],
 	"Torchtime": 0,
 	"PlayerIsAlive": false
 }
-
-
-
-
-// Some global variables needed to progress the game. (sorry. I know this is a bad way to do shit)
-// this stuff will be replaced by data imported from a Json file. It's all temporary now.
-// character sheet:
-/*
-var pName = '';
-var maxPHp = 0;
-var pHp = 0;
-var pAtk = 0;
-var pDef = 0;
-var pWpn = ['',0];
-var pArm = ['',0];
-var inv = ['-','-','-','-','-','-','-','-','-'];
-var Torchtime = 0;
-var PlayerIsAlive = false;
-
-// Monster sheet:
-var encName = '';
-var encAtk = 0;     //  not always a weapon....
-var encDef = 0;     // not always armour either
-var encHp = 0;
-*/
-
-/* item tables:      use a 2d array?  [itemname,type,value]
---- doing this should remove the need to have item name anywhere else, just refer to the item with item[x],
- and fetch the corresponding value from the referenced array dimension. */
-
-
-/* Loot tables:     another 2d array? [itemname,type,value].
-same thing here, the loot should be based on the enemy, so one enemy should drop x type of loot only.
-*/
-
-/* encounter tables. format: encounter[x] where x is a second array containing the enemy's stats in the format: encName,encAtk,encDef and encHp.
-We can mess with randomizing the enemy stats a bit later on, by adding a weight variable rather than a direct value */
-
-
-
-// setting up the character sheet at game start:
-/*
-function newGame(){
-  pName = prompt('what should I call you?');
-  maxPHp = 50 + d10() * 5;
-  pHp = maxPHp;
-  pWpn = '';
-  pArm = '';
-  inv[0] = 'Torch'
-  inv[1] = 'health potion'
-  inv[2] = 'Mysterious note'
-  PlayerIsAlive = true;
-  // populating the inventory screen
-  for (var i = 0; i < inv.length ; i++) {
-    document.getElementById('Slot'+ i).innerHTML = inv[i];
-  }
+var encounterStats = {
+  "encName":"",
+  "encAtk":0,
+  "encDef":0,
+  "encHp":0,
+  "Lootdrop":["loot"]
 }
 
-*/
+// item tables: todo
 
 
+// Loot tables:    todo
+
+// enemy tables: todo
+
+
+// preparing a new game. stats has to be reset to start values annyway.
+function newGame(){
+  charSheet.pName = prompt('what should I call you?');
+  charSheet.maxPHp = 50 + d10() * 5;
+  charSheet.pHp = charSheet.maxPHp;
+  charSheet.pWpn = ['',0];
+  charSheet.pArm = ['',0];
+  charSheet.inv[0] = 'Torch'
+  charSheet.inv[1] = 'health potion'
+  charSheet.inv[2] = 'Mysterious note'
+  charSheet.PlayerIsAlive = true;
+  // populating the inventory screen for the dirst time.
+  for (var i = 0; i < charSheet.inv.length ; i++) {
+    document.getElementById('Slot'+ i).innerHTML = charSheet.inv[i];
+  }
+}
 
 // some other global stuff we need. should try to avoid doing this as much as possible tho.
 
@@ -133,16 +108,16 @@ function PlayerInput(action,option){
   }
   else if (action == 'attack'){
     if (isEncounter == true){
-      encHp =- hit(pAtk,encDef,pName,encName);
-      if (encHp <= 0){
+      encHp =- hit(charSheet.pAtk,encounterStats.encDef,charSheet.pName,encounterStats.encName);
+      if (encounterStats.encHp <= 0){
         console.log('The enemy has died');
         isEncounter = false;
         return;
       }
-      pHp =- hit(encAtk,pDef,encName,pName);
-        if (pHp <= 0){
+      pHp =- hit(encounterStats.encAtk,charSheet.pDef,encounterStats.encName,charSheet.pName);
+        if (charSheet.pHp <= 0){
           console.log('You have died');
-          PlayerIsAlive = false;
+          charSheet.PlayerIsAlive = false;
         }
       }
     else{
@@ -150,7 +125,7 @@ function PlayerInput(action,option){
     }
   }
   else if (action == 'use'){
-    console.log(inv[option]);
+    console.log(charSheet.inv[option]);
     // Let's use the item stored in inventory slot option
   }
   else if (action == 'move'){
