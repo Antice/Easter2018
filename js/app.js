@@ -148,8 +148,8 @@ var attack = function(attack,defence){
 
 var combatRound = function(){
   //player attacks first:
-  if (attack(player.pAtk + player.pWpn[1], encTable[game.enemy].encDef)){
-    addToLog('You attack (hit)');
+  if (attack((player.pAtk + player.pWpn[1]), encTable[game.enemy].encDef)){
+    addToLog('Your attack (hit)');
     game.enemyHp = game.enemyHp - (player.pWpn[1] + d10() - encTable[game.enemy].encDef);
     if (game.enemyHp < 0) {
       addToLog('The enemy has died');
@@ -164,9 +164,9 @@ var combatRound = function(){
   }
 
   // enemy turn:
-  if (attack(encTable[game.enemy].encAtk, player.pDef + player.pArm)){
-    addToLog('Enemy attacks (hit)');
-    player.pHp =- encTable[game.enemy].encAtk + d10() - (player.pDef + player.pArm[1]);
+  if (attack(encTable[game.enemy].encAtk, (player.pDef + player.pArm[1]))){
+    addToLog('Enemy attack (hit)');
+    player.pHp = player.pHp - (encTable[game.enemy].encAtk + d10() - (player.pDef + player.pArm[1]));
     addToLog('you have' + ' ' + player.pHp + ' ' + 'HP left.');
   }
   else {
