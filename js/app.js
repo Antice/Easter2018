@@ -1,4 +1,3 @@
-// Data sheets
 
 //Character sheet:
 var player = {
@@ -151,8 +150,14 @@ var combatRound = function(){
   //player attacks first:
   if (attack(player.pAtk + player.pWpn[1], encTable[game.enemy].encDef)){
     addToLog('You attack (hit)');
-    encTable[game.enemy].encHp =- player.pWpn[1] + d10() - encTable[game.enemy].encDef;
-    addToLog('The enemy has' + ' ' + encTable[game.enemy].encHp + ' ' + 'HP left.');
+    game.enemyHp = game.enemyHp - (player.pWpn[1] + d10() - encTable[game.enemy].encDef);
+    if (game.enemyHp < 0) {
+      addToLog('The enemy has died');
+      game.encounter = false;
+    }
+    else {
+      addToLog('The enemy has' + ' ' + game.enemyHp + ' ' + 'HP left.');
+    }
   }
   else {
     addToLog('You miss');
