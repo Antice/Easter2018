@@ -1,9 +1,6 @@
-//trying it with Json
+// Data sheets
 
-
-
-
-//testing the stuff.
+//Character sheet:
 var charSheet = {
 	"pName": "",
 	"maxPHp": 0,
@@ -14,25 +11,35 @@ var charSheet = {
 	"pArm": ["", 0],
 	"inv": ["", "", "", "", "", "", "", "", ""],
 	"Torchtime": 0,
-	"PlayerIsAlive": false
+	"playerStatus": 'dead'
 }
-var encounterStats = {
-  "encName":"",
-  "encAtk":0,
-  "encDef":0,
-  "encHp":0,
-  "Lootdrop":["loot"]
-}
-
-
-
 
 // item tables: todo
 
 
 // Loot tables:    todo
 
+
 // enemy tables: todo
+var encTable = {
+  "Rat":{
+			"encAtk": 0,
+			"encDef": 0,
+			"encHp": 20,
+			"Loot": "lTable1"
+	},
+	"Giant Rat":{
+			"encAtk" : 1,
+			"encDef" : 2,
+			"encHp"  : 40,
+	}
+}
+// current encounter if any:
+var CurrentEnc = {
+	"encName": "",
+	"encHp":0
+}
+
 
 
 // preparing a new game. stats has to be reset to start values annyway.
@@ -40,12 +47,12 @@ function newGame(){
   charSheet.pName = prompt('what should I call you?');
   charSheet.maxPHp = 50 + d10() * 5;
   charSheet.pHp = charSheet.maxPHp;
-  charSheet.pWpn = ['',0];
-  charSheet.pArm = ['',0];
+  charSheet.pWpn = ['rusty knife',0];
+  charSheet.pArm = ['worn rags',0];
   charSheet.inv[0] = 'Torch'
   charSheet.inv[1] = 'health potion'
   charSheet.inv[2] = 'Mysterious note'
-  charSheet.PlayerIsAlive = true;
+  charSheet.playerStatus = 'alive';
   // populating the inventory screen for the dirst time.
   for (var i = 0; i < charSheet.inv.length ; i++) {
     document.getElementById('Slot'+ i).innerHTML = charSheet.inv[i];
@@ -53,9 +60,6 @@ function newGame(){
 }
 
 // some other global stuff we need. should try to avoid doing this as much as possible tho.
-
-var isEncounter = true;
-
 
 // information about the current tile, might need to do something about visual range too.
 
@@ -67,44 +71,6 @@ var roomtype = function(){
   return roomTypes[d10()];
 }
 
-// Game engine stuff
-
-//Roll the dice.
-var d10 = function(){
-  return Math.floor(Math.random()* 10 + 1);
-}
-
-// Does it hit?
-var attack = function(attack,defence){
-  if (attack + d10() > defence + d10()){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
-
-
-// resolving Combat
-var hit = function(attack,defence,actor1,actor2){
-  var damage = attack + d10() - defence;
-  if (damage <= 1){
-    addToLog( actor1 +'\'s strike barely scratches the' + ' ' + actor2 + ', ' + 'dealing' + ' ' + damage + ' ' + 'HP worth of damage');   // <-- This is such a silly way to do this.
-    return damage;
-  }
-  else if (damage > 1 && damage <= 3) {
-    addToLog(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a shallow cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
-    return damage;
-  }
-  else if (damage > 3 && damage <= 5) {
-    addToLog(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'causing a serious cut, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
-    return damage;
-  }
-  else{
-    addToLog(actor1 + ' ' + 'hits the' + ' ' + actor2 + ' ' + 'inflicting a deep wound, dealing' + ' ' + damage + ' ' + 'HP worth of damage');
-    return damage;
-  }
-}
 // log output to screen:
 // got to keep tabs on the old stuff:
 var logHistory = ['Welcome'];
@@ -123,55 +89,116 @@ function addToLog(newLogEntry){
 // done
 
 
+
+
+
+
+
+
+
+
+
+// Game engine stuff
+// dead players can't act.
+var pIsDead = function(){
+addToLog('You are dead, Start a new game if you want to play.')
+}
+
+
+
+
+//Roll the dice.
+var d10 = function(){
+  return Math.floor(Math.random()* 10 + 1);
+}
+
+// Does it hit?
+var attack = function(attack,defence){
+  if (attack + d10() > defence + d10()){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+
+// resolving Combat
+
+
 // player initiated gameturn;
 // because I don't know a better way within js.
+var combat = function(action,option){
+  switch (action) {
+    case 'attack':
+      combatround()
+      break;
+    case 'move':
+      runAway();
+      break;
+    case 'search':
+    addToLog('No time for that now')
+    break;
+    case 'use':
+      addToLog('Nothing here yet');
+      break;
+    default:
 
-function PlayerInput(action,option){
-  if (charSheet.PlayerIsAlive == false && option == !'Action'){
-    addToLog('Dead people can\'t play ball.');
-    addToLog('Why not start a new game?');
   }
-  else if (action == 'attack'){
-    if (isEncounter == true){
-      encHp =- hit(charSheet.pAtk,encounterStats.encDef,charSheet.pName,encounterStats.encName);
-      if (encounterStats.encHp <= 0){
-        addToLog('The enemy has died');
-        isEncounter = false;
-        return;
-      }
-      pHp =- hit(encounterStats.encAtk,charSheet.pDef,encounterStats.encName,charSheet.pName);
-        if (charSheet.pHp <= 0){
-          addToLog('You have died');
-          charSheet.PlayerIsAlive = false;
-        }
-      }
-    else{
-      addToLog('Nothing there to kill');
-    }
-  }
-  else if (action == 'use'){
-    addToLog(charSheet.inv[option]);
-    // Let's use the item stored in inventory slot option
-  }
-  else if (action == 'move'){
-    switch (option) {
-      case 'N':
-        addToLog('You walked north');
-      break;
-      case 'S':
-        addToLog('You walked south');
-      break;
-      case 'E':
-        addToLog('You walked east');
-      break;
-      case 'W':
-        addToLog('You walked west');
-      break;
-      default:
+}
+
+
+var navigate = function(direction){
+  switch (direction) {
+    case 'N':
+      addToLog('You walked north');
+    break;
+    case 'S':
+      addToLog('You walked south');
+    break;
+    case 'E':
+      addToLog('You walked east');
+    break;
+    case 'W':
+      addToLog('You walked west');
+    break;
+    default:
       addToLog('This should never happen!!!')
-    }
   }
-  else if (option == 'action') {
-    newGame()
+}
+
+var noCombat = function(action,option){
+  switch (action) {
+    case 'move':
+      navigate(option)
+      break;
+    case 'search':
+      console.log(action + ' ' + 'Nothing yet');
+      break;
+    case 'action':
+      console.log(action + ' ' + 'Nothing here yet')
+      break;
+    case 'use':
+      useItem();
+      break;
+    case 'attack':
+      addToLog('You take a few practice swings with your' + ' ' + charSheet.pWpn[0]);
+      break;
+    default:
+    console.log('Did you press a broken button?');
+  }
+}
+
+
+// this is the "main" loop of the script.
+function PlayerInput(action,option){
+  if (charSheet.playerStatus =='dead') {
+    pIsDead()
+  }
+else if (charSheet.playerStatus == 'combat') {
+  combat(action,option);
+  }
+else{
+  noCombat(action,option);
   }
 }
