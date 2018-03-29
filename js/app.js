@@ -2,42 +2,67 @@
 
 //Character sheet:
 var charSheet = {
-	"pName": "",
-	"maxPHp": 0,
-	"pHp": 0,
-	"pAtk": 0,
-	"pDef": 0,
-	"pWpn": ["", 0],
-	"pArm": ["", 0],
-	"inv": ["", "", "", "", "", "", "", "", ""],
-	"Torchtime": 0,
-	"playerStatus": 'dead'
+  	"pName": "",
+  	"maxPHp": 0,
+  	"pHp": 0,
+  	"pAtk": 0,
+  	"pDef": 0,
+  	"pWpn": ["", 0],
+  	"pArm": ["", 0],
+  	"inv": ["", "", "", "", "", "", "", "", ""],
+  	"Torchtime": 0,
+  	"playerStatus": 'dead'
 }
 
 // item tables: todo
-
+var itemTable = {
+    "potion":{
+      "effect":['HPup',50],
+      "fText": "You drink the potion, You feel healthier"
+    },
+    "Torch":{
+      "effect": "Light",
+      "fText": "It's flickering light let's you see a bit into the darkness"
+    },
+    "Mysterious note":{
+      "effect": "none",
+      "fText": "It's a mysterious note. You know, for setting the mood and stuff."
+    }
+}
 
 // Loot tables:    todo
-
+var lootTable = {
+  "lTable1": ['potion']
+  }
 
 // enemy tables: todo
 var encTable = {
-  "Rat":{
-			"encAtk": 0,
-			"encDef": 0,
-			"encHp": 20,
-			"Loot": "lTable1"
-	},
-	"Giant Rat":{
-			"encAtk" : 1,
-			"encDef" : 2,
-			"encHp"  : 40,
-	}
+    "Rat":{
+    			"encAtk": 0,
+    			"encDef": 0,
+    			"encHp": 20,
+    			"Loot": "lTable1"
+  	       },
+  	"Giant Rat":{
+    			"encAtk" : 2,
+    			"encDef" : 1,
+    			"encHp"  : 40,
+          "Loot": "lTable1"
+        },
+    "Giant spider":{
+        "encAtk" : 1,
+        "encDef" : 2,
+        "encHp"  : 40,
+        "Loot": "lTable1"
+        }
 }
 // current encounter if any:
 var CurrentEnc = {
-	"encName": "",
-	"encHp":0
+	"encName": "Rat",
+	"encAtk": 0,
+	"encDef": 0,
+	"encHp": 20,
+	"Loot": "lTable1"
 }
 
 
@@ -47,7 +72,7 @@ function newGame(){
   charSheet.pName = prompt('what should I call you?');
   charSheet.maxPHp = 50 + d10() * 5;
   charSheet.pHp = charSheet.maxPHp;
-  charSheet.pWpn = ['rusty knife',0];
+  charSheet.pWpn = ['rusty knife',1];
   charSheet.pArm = ['worn rags',0];
   charSheet.inv[0] = 'Torch'
   charSheet.inv[1] = 'health potion'
@@ -77,9 +102,9 @@ var logHistory = ['Welcome'];
 //adding new log entries:
 function addToLog(newLogEntry){
   var logString = '';
-  logHistory.unshift( '<p>' + newLogEntry + '</p>');
+  logHistory.push( '<p>' + newLogEntry + '</p>');
   if(logHistory.length > 20){
-  logHistory.pop();
+  logHistory.shift();
   }
   for(i = 0; logHistory.length > i; i++){
   logString = logString + logHistory[i];
@@ -107,6 +132,11 @@ addToLog('You are dead, Start a new game if you want to play.')
 
 
 
+
+
+
+// resolving Combat
+
 //Roll the dice.
 var d10 = function(){
   return Math.floor(Math.random()* 10 + 1);
@@ -121,23 +151,64 @@ var attack = function(attack,defence){
     return false;
   }
 }
+// fighting
+
+var combatRound = function(){
+  //player attacks first:
+  if (attack(charSheet.pAtk + charSheet.pWpn[1], CurrentEnc.encDef)){
+    addToLog('You attack (hit)');
+    CurrentEnc.encHp =- charSheet.pWpn[1] + d10() - CurrentEnc.encDef;
+    addToLog('The enemy has' + ' ' + CurrentEnc.encHp + ' ' + 'HP left.');
+  }
+  else {
+    addToLog('You miss');
+  }
 
 
-// resolving Combat
+  // enemy turn:
+  if (attack(CurrentEnc.encAtk, charSheet.pDef + charSheet.pArm)){
+    addToLog('Enemy attacks (hit)');
+    charSheet.pHp =- CurrentEnc.encAtk + d10() - (charSheet.pDef + charSheet.pArm[1]);
+    addToLog('you have' + ' ' + charSheet.pHp + ' ' + 'HP left.');
+  }
+  else {
+    addToLog('Enemy misses');
+  }
+}
+// running runAway
+var runAway = function(direction){
+  // a bit temporary, to be replaced with something better later.
+  switch (direction) {
+    case 'N':
+      addToLog('You ran north');
+    break;
+    case 'S':
+      addToLog('You ran south');
+    break;
+    case 'E':
+      addToLog('You ran east');
+    break;
+    case 'W':
+      addToLog('You ran west');
+    break;
+    default:
+      addToLog('This should never happen!!!')
+  }
+  charSheet.playerStatus = 'alive'
+}
 
 
-// player initiated gameturn;
-// because I don't know a better way within js.
+// in case of combat
 var combat = function(action,option){
   switch (action) {
     case 'attack':
-      combatround()
+      combatRound();
       break;
     case 'move':
-      runAway();
+      runAway(option);
       break;
     case 'search':
-    addToLog('No time for that now')
+    addToLog('No time for that now');
     break;
     case 'use':
       addToLog('Nothing here yet');
@@ -147,7 +218,30 @@ var combat = function(action,option){
   }
 }
 
+// in case of a non combat situation
+var noCombat = function(action,option){
+  switch (action) {
+    case 'move':
+      navigate(option)
+      break;
+    case 'search':
+      console.log(action + ' ' + 'Nothing yet');
+      break;
+    case 'action':
+      console.log(action + ' ' + 'Nothing here yet')
+      break;
+    case 'use':
+      useItem(option);
+      break;
+    case 'attack':
+      addToLog('You take a few practice swings with your' + ' ' + charSheet.pWpn[0]);
+      break;
+    default:
+    console.log('Did you press a broken button?');
+  }
+}
 
+// moving about
 var navigate = function(direction){
   switch (direction) {
     case 'N':
@@ -167,27 +261,13 @@ var navigate = function(direction){
   }
 }
 
-var noCombat = function(action,option){
-  switch (action) {
-    case 'move':
-      navigate(option)
-      break;
-    case 'search':
-      console.log(action + ' ' + 'Nothing yet');
-      break;
-    case 'action':
-      console.log(action + ' ' + 'Nothing here yet')
-      break;
-    case 'use':
-      useItem();
-      break;
-    case 'attack':
-      addToLog('You take a few practice swings with your' + ' ' + charSheet.pWpn[0]);
-      break;
-    default:
-    console.log('Did you press a broken button?');
-  }
-}
+
+
+
+
+
+
+
 
 
 // this is the "main" loop of the script.
