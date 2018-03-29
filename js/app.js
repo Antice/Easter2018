@@ -1,7 +1,7 @@
 // Data sheets
 
 //Character sheet:
-var charSheet = {
+var player = {
   	"pName": "",
   	"maxPHp": 0,
   	"pHp": 0,
@@ -11,7 +11,7 @@ var charSheet = {
   	"pArm": ["", 0],
   	"inv": ["", "", "", "", "", "", "", "", ""],
   	"Torchtime": 0,
-  	"playerStatus": 'dead'
+  	"Status": false
 }
 
 // item tables: todo
@@ -27,75 +27,78 @@ var itemTable = {
     "Mysterious note":{
       "effect": "none",
       "fText": "It's a mysterious note. You know, for setting the mood and stuff."
-    }
+    },
+		"Broken Sword":{
+			"effect": ["atkup",3],
+			"fText": "It's broken, but better than nothing"
+		},
+		"cracked club":{
+			"effect": ["atkup",5],
+			"fText": "Cracked, but still effective"
+		}
 }
 
 // Loot tables:    todo
-var lootTable = {
-  "lTable1": ['potion']
+var dropTable = {
+  "DropTable1": ["potion","Broken Sword","cracked club"]
   }
 
 // enemy tables: todo
 var encTable = {
+		"index":["Rat","Giant Rat","Giant Spider"],
     "Rat":{
     			"encAtk": 0,
     			"encDef": 0,
     			"encHp": 20,
-    			"Loot": "lTable1"
+    			"Loot": "DropTable1"
   	       },
   	"Giant Rat":{
     			"encAtk" : 2,
     			"encDef" : 1,
     			"encHp"  : 40,
-          "Loot": "lTable1"
+          "Loot": "DropTable1"
         },
-    "Giant spider":{
+    "Giant Spider":{
         "encAtk" : 1,
         "encDef" : 2,
         "encHp"  : 40,
-        "Loot": "lTable1"
+        "Loot": "DropTable1"
         }
 }
-// current encounter if any:
-var CurrentEnc = {
-	"encName": "Rat",
-	"encAtk": 0,
-	"encDef": 0,
-	"encHp": 20,
-	"Loot": "lTable1"
+
+
+// game status
+var game = {
+  "encounter": false,
+  "enemy":"",
+  "enemyHp":0,
+  "items":[""]
+// add tiles and stuff later
 }
-
-
-
 // preparing a new game. stats has to be reset to start values annyway.
 function newGame(){
-  charSheet.pName = prompt('what should I call you?');
-  charSheet.maxPHp = 50 + d10() * 5;
-  charSheet.pHp = charSheet.maxPHp;
-  charSheet.pWpn = ['rusty knife',1];
-  charSheet.pArm = ['worn rags',0];
-  charSheet.inv[0] = 'Torch'
-  charSheet.inv[1] = 'health potion'
-  charSheet.inv[2] = 'Mysterious note'
-  charSheet.playerStatus = 'alive';
+  player.pName = prompt('what should I call you?');
+  player.maxPHp = 50 + d10() * 5;
+  player.pHp = player.maxPHp;
+  player.pWpn = ['rusty knife',1];
+  player.pArm = ['worn rags',0];
+  player.inv[0] = 'Torch'
+  player.inv[1] = 'health potion'
+  player.inv[2] = 'Mysterious note'
+  player.Status = true;
   // populating the inventory screen for the dirst time.
-  for (var i = 0; i < charSheet.inv.length ; i++) {
-    document.getElementById('Slot'+ i).innerHTML = charSheet.inv[i];
+  for (var i = 0; i < player.inv.length ; i++) {
+    document.getElementById('Slot'+ i).innerHTML = player.inv[i];
   }
 }
 
-// some other global stuff we need. should try to avoid doing this as much as possible tho.
-
-// information about the current tile, might need to do something about visual range too.
-
-//format: ground,north,east,south,west,enemy,Items[],Special[].
-// var tiledata = ['','','','','','',itemId[''],featurId['']]
-/* some temporary/under testing stuff */
-// Tile generation functions that I may or may not have time to implement.
-var roomtype = function(){
-  return roomTypes[d10()];
+// Setting up an encounter.
+var encounterEvent = function(){
+  game.enemy = encTable.index[Math.floor(Math.random() * encTable.index.length)];
+  console.log(game.enemy);
+  game.enemyHp = encTable[game.enemy].encHp;
+  console.log(game.enemyHp);
 }
-
 // log output to screen:
 // got to keep tabs on the old stuff:
 var logHistory = ['Welcome'];
@@ -116,23 +119,11 @@ function addToLog(newLogEntry){
 
 
 
-
-
-
-
-
-
-
 // Game engine stuff
 // dead players can't act.
 var pIsDead = function(){
 addToLog('You are dead, Start a new game if you want to play.')
 }
-
-
-
-
-
 
 
 // resolving Combat
@@ -155,21 +146,20 @@ var attack = function(attack,defence){
 
 var combatRound = function(){
   //player attacks first:
-  if (attack(charSheet.pAtk + charSheet.pWpn[1], CurrentEnc.encDef)){
+  if (attack(player.pAtk + player.pWpn[1], encTable[game.enemy].encDef)){
     addToLog('You attack (hit)');
-    CurrentEnc.encHp =- charSheet.pWpn[1] + d10() - CurrentEnc.encDef;
-    addToLog('The enemy has' + ' ' + CurrentEnc.encHp + ' ' + 'HP left.');
+    encTable[game.enemy].encHp =- player.pWpn[1] + d10() - encTable[game.enemy].encDef;
+    addToLog('The enemy has' + ' ' + encTable[game.enemy].encHp + ' ' + 'HP left.');
   }
   else {
     addToLog('You miss');
   }
 
-
   // enemy turn:
-  if (attack(CurrentEnc.encAtk, charSheet.pDef + charSheet.pArm)){
+  if (attack(encTable[game.enemy].encAtk, player.pDef + player.pArm)){
     addToLog('Enemy attacks (hit)');
-    charSheet.pHp =- CurrentEnc.encAtk + d10() - (charSheet.pDef + charSheet.pArm[1]);
-    addToLog('you have' + ' ' + charSheet.pHp + ' ' + 'HP left.');
+    player.pHp =- encTable[game.enemy].encAtk + d10() - (player.pDef + player.pArm[1]);
+    addToLog('you have' + ' ' + player.pHp + ' ' + 'HP left.');
   }
   else {
     addToLog('Enemy misses');
@@ -180,21 +170,21 @@ var runAway = function(direction){
   // a bit temporary, to be replaced with something better later.
   switch (direction) {
     case 'N':
-      addToLog('You ran north');
+      addToLog('You ran to the north');
     break;
     case 'S':
-      addToLog('You ran south');
+      addToLog('You ran to the south');
     break;
     case 'E':
-      addToLog('You ran east');
+      addToLog('You ran to the east');
     break;
     case 'W':
-      addToLog('You ran west');
+      addToLog('You ran to the west');
     break;
     default:
-      addToLog('This should never happen!!!')
+      addToLog('This should never happen!!!');
   }
-  charSheet.playerStatus = 'alive'
+  game.encounter = false;
 }
 
 
@@ -234,7 +224,7 @@ var noCombat = function(action,option){
       useItem(option);
       break;
     case 'attack':
-      addToLog('You take a few practice swings with your' + ' ' + charSheet.pWpn[0]);
+      addToLog('You take a few practice swings with your' + ' ' + player.pWpn[0]);
       break;
     default:
     console.log('Did you press a broken button?');
@@ -262,20 +252,12 @@ var navigate = function(direction){
 }
 
 
-
-
-
-
-
-
-
-
 // this is the "main" loop of the script.
 function PlayerInput(action,option){
-  if (charSheet.playerStatus =='dead') {
+  if (!player.Status) {
     pIsDead()
   }
-else if (charSheet.playerStatus == 'combat') {
+else if (game.encounter) {
   combat(action,option);
   }
 else{
