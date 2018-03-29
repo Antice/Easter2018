@@ -15,16 +15,16 @@ var player = {
 
 // item tables: todo
 var itemTable = {
-    "potion":{
+    "Potion":{
       "effect":['HPup',50],
       "fText": "You drink the potion, You feel healthier"
     },
     "Torch":{
-      "effect": "Light",
+      "effect": ["Light",100],
       "fText": "It's flickering light let's you see a bit into the darkness"
     },
     "Mysterious note":{
-      "effect": "none",
+      "effect": ["read",0],
       "fText": "It's a mysterious note. You know, for setting the mood and stuff."
     },
 		"Broken Sword":{
@@ -82,7 +82,7 @@ function newGame(){
   player.pWpn = ['rusty knife',1];
   player.pArm = ['worn rags',0];
   player.inv[0] = 'Torch'
-  player.inv[1] = 'health potion'
+  player.inv[1] = 'Potion'
   player.inv[2] = 'Mysterious note'
   player.Status = true;
   // populating the inventory screen for the dirst time.
@@ -124,7 +124,8 @@ function addToLog(newLogEntry){
 // Game engine stuff
 // dead players can't act.
 var pIsDead = function(){
-addToLog('You are dead, Start a new game if you want to play.')
+addToLog('You are dead, Start a new game if you want to play.');
+newGame();
 }
 
 
@@ -196,6 +197,30 @@ var runAway = function(direction){
 }
 
 
+
+
+// using an item from the quickslots
+var useItem = function(slot){
+  var effect = itemTable[player.inv[slot]].effect[0];
+  console.log(effect);
+  addToLog(itemTable[player.inv[slot]].fText);
+  switch (effect) {
+    case 'HPup':
+      player.pHp = player.pHp + itemTable[player.inv[slot]].effect[1];
+      player.inv[slot] = '';
+      break;
+    case 'Light':
+        player.inv[slot] = '';
+        break;
+    case 'read':
+        addToLog()
+        break;
+    default:
+
+  }
+  document.getElementById('Slot'+ slot).innerHTML = player.inv[slot];
+}
+
 // in case of combat
 var combat = function(action,option){
   switch (action) {
@@ -206,10 +231,10 @@ var combat = function(action,option){
       runAway(option);
       break;
     case 'search':
-    addToLog('No time for that now');
-    break;
+      addToLog('No time for that now');
+      break;
     case 'use':
-      addToLog('Nothing here yet');
+      useItem(option);
       break;
     default:
 
