@@ -6,8 +6,8 @@ var player = {
   	"pHp": 0,
   	"pAtk": 0,
   	"pDef": 0,
-  	"pWpn": ["", 0],
-  	"pArm": ["", 0],
+  	"pWpn": "",
+  	"pArm": "",
   	"inv": ["", "", "", "", "", "", "", "", ""],
   	"Torchtime": 0,
   	"Status": false
@@ -16,7 +16,7 @@ var player = {
 // item tables: todo
 var itemTable = {
     "Potion":{
-      "effect":['HPup',50],
+      "effect":["HPup",50],
       "fText": "You drink the potion, You feel healthier"
     },
     "Torch":{
@@ -27,13 +27,21 @@ var itemTable = {
       "effect": ["read",0],
       "fText": "It's a mysterious note. You know, for setting the mood and stuff."
     },
+		"Rusty Knife":{
+			"effect": ["weapon",3],
+			"fText": "It's rusty, they might die from tetanus."
+		},
 		"Broken Sword":{
-			"effect": ["atkup",3],
+			"effect": ["weapon",3],
 			"fText": "It's broken, but better than nothing"
 		},
 		"cracked club":{
-			"effect": ["atkup",5],
+			"effect": ["weapon",5],
 			"fText": "Cracked, but still effective"
+		},
+		"Worn Rags":{
+			"effect" : ["armor",2],
+			"fText" : "Disgusting to wear, but the alternative is being naked"
 		}
 }
 
@@ -79,11 +87,12 @@ function newGame(){
   player.pName = prompt('what should I call you?');
   player.maxPHp = 50 + d10() * 5;
   player.pHp = player.maxPHp;
-  player.pWpn = ['rusty knife',1];
-  player.pArm = ['worn rags',0];
+  player.pWpn = 'Rusty Knife';
+  player.pArm = 'Worn Rags';
   player.inv[0] = 'Torch'
   player.inv[1] = 'Potion'
   player.inv[2] = 'Mysterious note'
+	player.inv[3] = 'Broken Sword'
   player.Status = true;
   // populating the inventory screen for the dirst time.
   for (var i = 0; i < player.inv.length ; i++) {
@@ -91,13 +100,6 @@ function newGame(){
   }
 }
 
-// Setting up an encounter.
-var encounterEvent = function(){
-  game.enemy = encTable.index[Math.floor(Math.random() * encTable.index.length)];
-  game.enemyHp = encTable[game.enemy].encHp;
-  game.encounter = true;
-  addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn[0] + ' ' + 'and prepare for combat');
-}
 
 
 
@@ -128,6 +130,13 @@ addToLog('You are dead, Start a new game if you want to play.');
 newGame();
 }
 
+// Setting up an encounter.
+var encounterEvent = function(){
+  game.enemy = encTable.index[Math.floor(Math.random() * encTable.index.length)];
+  game.enemyHp = encTable[game.enemy].encHp;
+  game.encounter = true;
+  addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn + ' ' + 'and prepare for combat');
+}
 
 // resolving Combat
 
@@ -149,9 +158,9 @@ var attack = function(attack,defence){
 
 var combatRound = function(){
   //player attacks first:
-  if (attack((player.pAtk + player.pWpn[1]), encTable[game.enemy].encDef)){
+  if (attack((player.pAtk + itemTable[player.pWpn].effect[1]), encTable[game.enemy].encDef)){
     addToLog('Your attack (hit)');
-    game.enemyHp = game.enemyHp - (player.pWpn[1] + d10() - encTable[game.enemy].encDef);
+    game.enemyHp = game.enemyHp - (itemTable[player.pWpn].effect[1] + d10() - encTable[game.enemy].encDef);
     if (game.enemyHp < 0) {
       addToLog('The enemy has died');
       game.encounter = false;
@@ -165,9 +174,9 @@ var combatRound = function(){
   }
 
   // enemy turn:
-  if (attack(encTable[game.enemy].encAtk, (player.pDef + player.pArm[1]))){
+  if (attack(encTable[game.enemy].encAtk, (player.pDef + itemTable[player.pArm].effect[1]))){
     addToLog('Enemy attack (hit)');
-    player.pHp = player.pHp - (encTable[game.enemy].encAtk + d10() - (player.pDef + player.pArm[1]));
+    player.pHp = player.pHp - (encTable[game.enemy].encAtk + d10() - (player.pDef + itemTable[player.pArm].effect[1]));
     addToLog('you have' + ' ' + player.pHp + ' ' + 'HP left.');
   }
   else {
@@ -215,6 +224,11 @@ var useItem = function(slot){
     case 'read':
         addToLog()
         break;
+    case 'weapon':
+      var old = player.pWpn;
+      player.pWpn = player.inv[slot];
+      player.inv[slot] = old;
+      break;
     default:
 
   }
@@ -257,7 +271,7 @@ var noCombat = function(action,option){
       useItem(option);
       break;
     case 'attack':
-      addToLog('You take a few practice swings with your' + ' ' + player.pWpn[0]);
+      addToLog('You take a few practice swings with your' + ' ' + player.pWpn);
       break;
     default:
     console.log('Did you press a broken button?');
