@@ -1,4 +1,3 @@
-
 //Character sheet:
 var player = {
   	"pName": "",
@@ -12,8 +11,7 @@ var player = {
   	"Torchtime": 0,
   	"Status": false
 }
-
-// item tables: todo
+// item table
 var itemTable = {
     "Potion":{
       "effect":["HPup",50],
@@ -44,13 +42,11 @@ var itemTable = {
 			"fText" : "Disgusting to wear, but the alternative is being naked"
 		}
 }
-
-// Loot tables:    todo
+// Loot table
 var dropTable = {
   "DropTable1": ["potion","Broken Sword","cracked club"]
   }
-
-// enemy tables: todo
+// encounter table
 var encTable = {
 		"index":["Rat","Giant Rat","Giant Spider"],
     "Rat":{
@@ -72,8 +68,6 @@ var encTable = {
         "Loot": "DropTable1"
         }
 }
-
-
 // game status
 var game = {
   "encounter": false,
@@ -99,12 +93,8 @@ function newGame(){
     document.getElementById('Slot'+ i).innerHTML = player.inv[i];
   }
 }
-
-
-
-
 // log output to screen:
-// got to keep tabs on the old stuff:
+// got to keep tabs on the old stuff, so a variable must be set.
 var logHistory = ['Welcome'];
 //adding new log entries:
 function addToLog(newLogEntry){
@@ -118,18 +108,11 @@ function addToLog(newLogEntry){
   }
   document.getElementById('log').innerHTML = logString;
 }
-// done
-
-
-
-
-// Game engine stuff
 // dead players can't act.
 var pIsDead = function(){
 addToLog('You are dead, Start a new game if you want to play.');
 newGame();
 }
-
 // Setting up an encounter.
 var encounterEvent = function(){
   game.enemy = encTable.index[Math.floor(Math.random() * encTable.index.length)];
@@ -137,14 +120,11 @@ var encounterEvent = function(){
   game.encounter = true;
   addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn + ' ' + 'and prepare for combat');
 }
-
 // resolving Combat
-
 //Roll the dice.
 var d10 = function(){
   return Math.floor(Math.random()* 10 + 1);
 }
-
 // Does it hit?
 var attack = function(attack,defence){
   if (attack + d10() > defence + d10()){
@@ -155,9 +135,8 @@ var attack = function(attack,defence){
   }
 }
 // fighting
-
 var combatRound = function(){
-  //player attacks first:
+//player attacks first:
   if (attack((player.pAtk + itemTable[player.pWpn].effect[1]), encTable[game.enemy].encDef)){
     addToLog('Your attack (hit)');
     game.enemyHp = game.enemyHp - (itemTable[player.pWpn].effect[1] + d10() - encTable[game.enemy].encDef);
@@ -172,8 +151,7 @@ var combatRound = function(){
   else {
     addToLog('You miss');
   }
-
-  // enemy turn:
+// enemy turn:
   if (attack(encTable[game.enemy].encAtk, (player.pDef + itemTable[player.pArm].effect[1]))){
     addToLog('Enemy attack (hit)');
     player.pHp = player.pHp - (encTable[game.enemy].encAtk + d10() - (player.pDef + itemTable[player.pArm].effect[1]));
@@ -204,10 +182,6 @@ var runAway = function(direction){
   }
   game.encounter = false;
 }
-
-
-
-
 // using an item from the quickslots
 var useItem = function(slot){
   var effect = itemTable[player.inv[slot]].effect[0];
@@ -230,11 +204,9 @@ var useItem = function(slot){
       player.inv[slot] = old;
       break;
     default:
-
   }
   document.getElementById('Slot'+ slot).innerHTML = player.inv[slot];
 }
-
 // in case of combat
 var combat = function(action,option){
   switch (action) {
@@ -251,10 +223,8 @@ var combat = function(action,option){
       useItem(option);
       break;
     default:
-
   }
 }
-
 // in case of a non combat situation
 var noCombat = function(action,option){
   switch (action) {
@@ -277,7 +247,6 @@ var noCombat = function(action,option){
     console.log('Did you press a broken button?');
   }
 }
-
 // moving about
 var navigate = function(direction){
   switch (direction) {
@@ -301,8 +270,6 @@ var navigate = function(direction){
     encounterEvent()
   }
 }
-
-
 // this is the "main" loop of the script.
 function PlayerInput(action,option){
   if (!player.Status) {
