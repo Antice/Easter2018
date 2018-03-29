@@ -9,7 +9,7 @@
     - [ ] 10 enemies.
     - [ ] at least 5 items.
     - [ ] some flavour text and spices.
-
+- [ ] Redo the log system to something less rough.
 ## Game engine:
 - [ ]An encounter system.
 - [ ]Combat system based on die rolls and hit tables.
@@ -19,7 +19,7 @@
     - [x] Health.
     - [ ] Hunger.
     - [ ] Thirst.
-- [ ]A weapon system that adds modifiers to hit and dps.
+- [x]A weapon system that adds modifiers to hit and dps.
 - [ ] Useable items.
 - [x] Inventory
 

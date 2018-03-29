@@ -95,10 +95,13 @@ function newGame(){
 // Setting up an encounter.
 var encounterEvent = function(){
   game.enemy = encTable.index[Math.floor(Math.random() * encTable.index.length)];
-  console.log(game.enemy);
   game.enemyHp = encTable[game.enemy].encHp;
-  console.log(game.enemyHp);
+  game.encounter = true;
+  addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn[0] + ' ' + 'and prepare for combat');
 }
+
+
+
 // log output to screen:
 // got to keep tabs on the old stuff:
 var logHistory = ['Welcome'];
@@ -248,6 +251,10 @@ var navigate = function(direction){
     break;
     default:
       addToLog('This should never happen!!!')
+  }
+  // maybe you get an encounter
+  if (d10() > 9) {
+    encounterEvent()
   }
 }
 
