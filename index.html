@@ -15,7 +15,7 @@
       <!-- Display -->
       <div class="log-window border-bottom">
         <div id="log">
-          <p>Welcome</p>
+          <p>Press any of the buttons to start a new game!</p>
         </div>
         <!-- game naration and action feedback goes here -->
       </div>
@@ -24,19 +24,19 @@
       <div class="inventory-area">
         <table>
           <tr>
-            <td class="inventory-slot">1.<td class="item-field" onclick="PlayerInput('use',0)" id="Slot0"></td> </div></td>
-            <td class="inventory-slot">2.<td class="item-field" onclick="PlayerInput('use',1)" id="Slot1"></td> </div></td>
-            <td class="inventory-slot">3.<td class="item-field" onclick="PlayerInput('use',2)" id="Slot2"></td> </div></td>
+            <td class="inventory-slot">1.<td class="item-field" onclick="PlayerInput('use',0)" id="Slot0"></td></div></td>
+            <td class="inventory-slot">2.<td class="item-field" onclick="PlayerInput('use',1)" id="Slot1"></td></div></td>
+            <td class="inventory-slot">3.<td class="item-field" onclick="PlayerInput('use',2)" id="Slot2"></td></div></td>
           </tr>
           <tr>
-            <td class="inventory-slot">4.<td class="item-field" onclick="PlayerInput('use',3)" id="Slot3"></td> </div></td>
-            <td class="inventory-slot">5.<td class="item-field" onclick="PlayerInput('use',4)" id="Slot4"></td> </div></td>
-            <td class="inventory-slot">6.<td class="item-field" onclick="PlayerInput('use',5)" id="Slot5"></td> </div></td>
+            <td class="inventory-slot">4.<td class="item-field" onclick="PlayerInput('use',3)" id="Slot3"></td></div></td>
+            <td class="inventory-slot">5.<td class="item-field" onclick="PlayerInput('use',4)" id="Slot4"></td></div></td>
+            <td class="inventory-slot">6.<td class="item-field" onclick="PlayerInput('use',5)" id="Slot5"></td></div></td>
           </tr>
           <tr>
-            <td class="inventory-slot">7.<td class="item-field" onclick="PlayerInput('use',6)" id="Slot6"></td> </div></td>
-            <td class="inventory-slot">8.<td class="item-field" onclick="PlayerInput('use',7)" id="Slot7"></td> </div></td>
-            <td class="inventory-slot">9.<td class="item-field" onclick="PlayerInput('use',8)" id="Slot8"></td> </div></td>
+            <td class="inventory-slot">7.<td class="item-field" onclick="PlayerInput('use',6)" id="Slot6"></td></div></td>
+            <td class="inventory-slot">8.<td class="item-field" onclick="PlayerInput('use',7)" id="Slot7"></td></div></td>
+            <td class="inventory-slot">9.<td class="item-field" onclick="PlayerInput('use',8)" id="Slot8"></td></div></td>
           </tr>
         </table>
       </div>
@@ -60,7 +60,16 @@
             <td></td>
             <td><button type="button" class="directionButton" onclick="PlayerInput('move','S')">S</button></td>
             <td></td>
-            <td><button type="button" class="actionbuttons" onclick="PlayerInput('action')">Action</button> </td>
+            <td><button type="button" class="actionbuttons" onclick="PlayerInput('action','open')">Action</button>
+            <div class="actionmenu" id="actionmenu">
+              <table>
+                <tr>
+                  <td> <button class="actionbuttons" type="button" name="drop" onclick="PlayerInput('action','drop')">Drop</button> </td>
+                  <td> <button class="actionbuttons" type="button" name="take" onclick="PlayerInput('action','take')">Take</button> </td>
+                </tr>
+              </table>
+
+            </div> </td>
           </tr>
         </table>
       </div>

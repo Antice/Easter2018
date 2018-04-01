@@ -44,3 +44,16 @@
 .control-buttons{
   margin-top: 5px;
 }
+.dropdown{
+  position:relative;
+  display: inline-block;
+}
+
+.actionmenu{
+  display:none;
+  float: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.showactions{display:block;}
