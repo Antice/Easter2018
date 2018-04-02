@@ -123,7 +123,7 @@ function newGame(){
   maptile[0][0] = ["dark cave","Rat","Potion"];
   game.x = 0;
   game.y = 0;
-  game.encounter = true;
+  maptile[game.x][game.y][-1] = true;
   game.enemy = "Rat";
   game.enemyHp = 10;
   game.logHistory.lenght = 0;
@@ -153,7 +153,7 @@ var pIsDead = function(){
 var encounterEvent = function(){
   game.enemy = encTable.index[Math.floor(Math.random() * encTable.index.length)];
   game.enemyHp = encTable[game.enemy].encHp;
-  game.encounter = true;
+  maptile[game.x][game.y][-1] = true;
   addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn + ' ' + 'and prepare for combat');
 }
 // dropping some treasure Yo!
@@ -183,6 +183,10 @@ else if (typeof(maptile[game.x][game.y]) === 'undefined'){
   if (d10() > 9) {encounterEvent();}
   if (d10() > 9) {treasureEvent();}
   }
+else if (maptile[game.x][game.y][0] === 'undefined') {
+  maptile[game.x][game.y][0] = ["Dark Cave"];
+  console.log('Why?');
+}
 }
 // Combat section
 //Roll the dice.
@@ -208,7 +212,7 @@ var combatRound = function(){
     game.enemyHp = game.enemyHp - (itemTable[player.pWpn].effect[1] + d10() - encTable[game.enemy].encDef);
     if (game.enemyHp < 0) {
       addToLog('The enemy has died');
-      game.encounter = false;
+      maptile[game.x][game.y][-1] = false;
       var ground = maptile[game.x][game.y];
       ground[ground.indexOf(game.enemy)] = '';
       ground.push('Dead' + ' ' + game.enemy);
@@ -221,7 +225,7 @@ var combatRound = function(){
     addToLog('You miss');
   }
 // enemy turn:
-  if (game.encounter == false) {
+  if (maptile[game.x][game.y][-1] == false) {
     return;
   }
   else if (attack(encTable[game.enemy].encAtk, (player.pDef + itemTable[player.pArm].effect[1]))){
@@ -295,7 +299,6 @@ var runAway = function(direction){
     default:
       addToLog('This should never happen!!!');
   }
-  game.encounter = false;
   maketile();
 }
 // moving about
@@ -449,7 +452,7 @@ function PlayerInput(action,option){
   if (!player.Status) {
     pIsDead()
   }
-else if (game.encounter) {
+else if (maptile[game.x][game.y][-1] == true) {
   combat(action,option);
   }
 else{
