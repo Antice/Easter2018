@@ -159,15 +159,16 @@ var encounterEvent = function(){
 // dumping some treasure Yo!
 var treasureEvent = function(){
   var lootItem;
-  if (d10 == 10) {
-      var lootItem = itemTable.index[Math.floor(Math.random() * itemTable.index.length)];
+  if (d10() ==  10) {
+      lootItem = itemTable.index[Math.floor(Math.random() * itemTable.index.length)];
   }
   else {
     if (Math.floor(Math.random() * 2) == 2){lootItem = 'Potion';}
     else {lootItem = 'Torch';}
   }
+  console.log(lootItem);
   var ground = maptile[game.x][game.y];
-  ground.push(lootItem)
+  maptile[game.x][game.y].push(lootItem);
 }
 // Making a maptile if needed:
 function maketile(){
@@ -176,19 +177,22 @@ if (typeof(maptile[game.x]) === 'undefined'){
   maptile[game.x][game.y] = [game.y];
   maptile[game.x][game.y][0] = ["Dark Cave"];
   if (d10() > 9) {encounterEvent();}
-  if (d10() > 1) {treasureEvent();}
+  if (d10() > 4) {treasureEvent();}
  }
 else if (typeof(maptile[game.x][game.y]) === 'undefined'){
   maptile[game.x][game.y] = [game.y];
   maptile[game.x][game.y][0] = ["Dark Cave"];
   if (d10() > 9) {encounterEvent();}
-  if (d10() == 1) {treasureEvent();}
+  if (d10() > 4) {treasureEvent();}
   }
 }
 // Combat section
 //Roll the dice.
 var d10 = function(){
-  return Math.floor(Math.random()* 10 + 1);
+  var d = Math.floor(Math.random()* 10 + 1);
+  console.log(d);
+  return d;
+
 }
 // Does it hit?
 var attack = function(attack,defence){
@@ -211,7 +215,6 @@ var combatRound = function(){
       var ground = maptile[game.x][game.y];
       ground[ground.indexOf(game.enemy)] = '';
       ground.push('Dead' + ' ' + game.enemy);
-      ground = ground.filter(s => s.replace(/\s+/g, '').length !== 0);
     }
     else {
       addToLog('The enemy has' + ' ' + game.enemyHp + ' ' + 'HP left.');
@@ -278,19 +281,19 @@ var runAway = function(direction){
   switch (direction) {
     case 'N':
       addToLog('You ran to the north');
-      game.x =+ 1;
+      game.x = game.x + 1;
     break;
     case 'S':
       addToLog('You ran to the south');
-      game.x =- 1;
+      game.x = game.x - 1;
     break;
     case 'E':
       addToLog('You ran to the east');
-      game.y =+ 1;
+      game.y = game.y + 1;
     break;
     case 'W':
       addToLog('You ran to the west');
-      game.y =- 1;
+      game.y = game.y - 1;
     break;
     default:
       addToLog('This should never happen!!!');
