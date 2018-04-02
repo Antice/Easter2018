@@ -156,19 +156,17 @@ var encounterEvent = function(){
   game.encounter = true;
   addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn + ' ' + 'and prepare for combat');
 }
-// dumping some treasure Yo!
+// dropping some treasure Yo!
 var treasureEvent = function(){
   var lootItem;
-  if (d10() ==  10) {
-      lootItem = itemTable.index[Math.floor(Math.random() * itemTable.index.length)];
+  if (d10() > 5) {
+      maptile[game.x][game.y].push(itemTable.index[Math.floor(Math.random() * itemTable.index.length)]);
+      console.log('Loot has dropped')
   }
   else {
     if (Math.floor(Math.random() * 2) == 2){lootItem = 'Potion';}
     else {lootItem = 'Torch';}
   }
-  console.log(lootItem);
-  var ground = maptile[game.x][game.y];
-  maptile[game.x][game.y].push(lootItem);
 }
 // Making a maptile if needed:
 function maketile(){
@@ -177,20 +175,19 @@ if (typeof(maptile[game.x]) === 'undefined'){
   maptile[game.x][game.y] = [game.y];
   maptile[game.x][game.y][0] = ["Dark Cave"];
   if (d10() > 9) {encounterEvent();}
-  if (d10() > 4) {treasureEvent();}
+  if (d10() > 9) {treasureEvent();}
  }
 else if (typeof(maptile[game.x][game.y]) === 'undefined'){
   maptile[game.x][game.y] = [game.y];
   maptile[game.x][game.y][0] = ["Dark Cave"];
   if (d10() > 9) {encounterEvent();}
-  if (d10() > 4) {treasureEvent();}
+  if (d10() > 9) {treasureEvent();}
   }
 }
 // Combat section
 //Roll the dice.
 var d10 = function(){
   var d = Math.floor(Math.random()* 10 + 1);
-  console.log(d);
   return d;
 
 }
@@ -306,19 +303,19 @@ var navigate = function(direction){
   switch (direction) {
     case 'N':
       addToLog('You walked north');
-      game.x =+ 1;
+      game.x = game.x + 1;
     break;
     case 'S':
       addToLog('You walked south');
-      game.x =- 1;
+      game.x = game.x - 1;
     break;
     case 'E':
       addToLog('You walked east');
-      game.y =+ 1;
+      game.y = game.y + 1;
     break;
     case 'W':
       addToLog('You walked west');
-      game.y =- 1;
+      game.y = game.y - 1;
     break;
     default:
       addToLog('This should never happen!!!');
