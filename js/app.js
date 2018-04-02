@@ -13,18 +13,19 @@ var player = {
 }
 // item table
 var itemTable = {
-    "index":["Potion","Torch","Mysterious note","Rusty Knife","Broken Sword","cracked club","Worn Rags"],
+    "index":["Potion","Torch","Mysterious note","Rusty Knife","Broken Sword","cracked club","Worn Rags","Worn leather armour","Sword","Gold Coin"],
+
     "Potion":{
       "effect":["HPup",50],
       "fText": "You drink the potion, You feel healthier"
     },
     "Torch":{
       "effect": ["Light",100],
-      "fText": "It's flickering light let's you see a bit into the darkness"
+      "fText": "It's flickering light let's you see a bit into the darkness, or not"
     },
     "Mysterious note":{
       "effect": ["read",0],
-      "fText": "It's a mysterious note. You know, for setting the mood and stuff."
+      "fText": ["I'm sorry that I had to leave you here.","I took all the stuff except a health potion and the rusty knife,","Good luck on surviving","Regards, your x-friend Reg."]
     },
 		"Rusty Knife":{
 			"effect": ["weapon",3],
@@ -41,7 +42,20 @@ var itemTable = {
 		"Worn Rags":{
 			"effect" : ["armor",2],
 			"fText" : "Disgusting to wear, but the alternative is being naked"
-		}
+		},
+    "Worn leather armour":{
+      "effect":["armor",4],
+      "fText" : "It might be worn, but it's pretty decent protection"
+    },
+    "Sword":{
+      "effect": ["weapon",8],
+      "fText": "Slice'n Dice baby."
+    },
+    "Gold Coin":{
+      "effect":["read",0],
+      "fText": "Very pretty but useless right now"
+    }
+
 }
 // Loot table
 var dropTable = {
@@ -96,7 +110,6 @@ function newGame(){
   player.inv[0] = 'Torch'
   player.inv[1] = 'Potion'
   player.inv[2] = 'Mysterious note'
-	player.inv[3] = 'Broken Sword'
   player.Status = true;
   // populating the inventory screen for the dirst time.
   for (var i = 0; i < player.inv.length ; i++) {
@@ -190,46 +203,31 @@ var combatRound = function(){
     addToLog('Enemy misses');
   }
 }
-// running runAway
-var runAway = function(direction){
-  // a bit temporary, to be replaced with something better later.
-  switch (direction) {
-    case 'N':
-      addToLog('You ran to the north');
-    break;
-    case 'S':
-      addToLog('You ran to the south');
-    break;
-    case 'E':
-      addToLog('You ran to the east');
-    break;
-    case 'W':
-      addToLog('You ran to the west');
-    break;
-    default:
-      addToLog('This should never happen!!!');
-  }
-  game.encounter = false;
-}
+
 // using an item from the quickslots, both in and out of combat.
 var useItem = function(slot){
   if (player.inv[slot] == '') {
-    console.log('it was empty');
+    addToLog('it was empty');
     return;
     }
   else {
     var effect = itemTable[player.inv[slot]].effect[0];
-    addToLog(itemTable[player.inv[slot]].fText);
     switch (effect) {
       case 'HPup':
+        addToLog(itemTable[player.inv[slot]].fText);
         player.pHp = player.pHp + itemTable[player.inv[slot]].effect[1];
         player.inv[slot] = '';
         break;
       case 'Light':
+          addToLog(itemTable[player.inv[slot]].fText);
           player.inv[slot] = '';
           break;
       case 'read':
-          addToLog()
+        addToLog('');
+        var text = itemTable[player.inv[slot]].fText;
+        for (var i = 0; i < text.length; i++) {
+          addToLog(text[i]);
+        }
           break;
       case 'weapon':
         var old = player.pWpn;
@@ -260,21 +258,49 @@ var combat = function(action,option){
     default:
   }
 }
-
+// running Away
+var runAway = function(direction){
+  // a bit temporary, to be replaced with something better later.
+  switch (direction) {
+    case 'N':
+      addToLog('You ran to the north');
+      game.x =+ 1;
+    break;
+    case 'S':
+      addToLog('You ran to the south');
+      game.x =- 1;
+    break;
+    case 'E':
+      addToLog('You ran to the east');
+      game.y =+ 1;
+    break;
+    case 'W':
+      addToLog('You ran to the west');
+      game.y =- 1;
+    break;
+    default:
+      addToLog('This should never happen!!!');
+  }
+  game.encounter = false;
+}
 // moving about
 var navigate = function(direction){
   switch (direction) {
     case 'N':
       addToLog('You walked north');
+      game.x =+ 1;
     break;
     case 'S':
       addToLog('You walked south');
+      game.x =- 1;
     break;
     case 'E':
       addToLog('You walked east');
+      game.y =+ 1;
     break;
     case 'W':
       addToLog('You walked west');
+      game.y =- 1;
     break;
     default:
       addToLog('This should never happen!!!');
