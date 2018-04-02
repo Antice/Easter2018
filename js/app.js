@@ -1,4 +1,4 @@
-//Character sheet:
+//Data section
 var player = {
   	"pName": "",
   	"maxPHp": 0,
@@ -13,15 +13,15 @@ var player = {
 }
 // item table
 var itemTable = {
-    "index":["Potion","Torch","Mysterious note","Rusty Knife","Broken Sword","cracked club","Worn Rags","Worn leather armour","Sword","Gold Coin"],
+    "index":["Potion","Torch","Mysterious note","Rusty Knife","Broken Sword","cracked club","Worn Rags","Worn leather","Sword","Gold Coin"],
 
     "Potion":{
       "effect":["HPup",50],
       "fText": "You drink the potion, You feel healthier"
     },
     "Torch":{
-      "effect": ["Light",100],
-      "fText": "It's flickering light let's you see a bit into the darkness, or not"
+      "effect":["Light",100],
+      "fText":"It's flickering light let's you see a bit into the darkness, or not"
     },
     "Mysterious note":{
       "effect": ["read",0],
@@ -43,7 +43,7 @@ var itemTable = {
 			"effect" : ["armor",2],
 			"fText" : "Disgusting to wear, but the alternative is being naked"
 		},
-    "Worn leather armour":{
+    "Worn leather":{
       "effect":["armor",4],
       "fText" : "It might be worn, but it's pretty decent protection"
     },
@@ -88,13 +88,15 @@ var game = {
   "encounter": false,
   "enemy":"",
   "enemyHp":0,
-  "maptile":{"0":{"0":["dark cave","Rat","Potion"]}},
+//  "maptile":{0:{0:[]}},
   "x":0,
   "y":0,
   "logHistory":['Welcome']
 }
-var ground = game.maptile[game.x][game.y];    // let's make dealing with the map a bit easier on ourselves.
-// add tiletyupes and more stuff later with some fancy map population function. encounters and loot are randomized elsewhere for now.
+var maptile = [];
+maptile[0] = [];
+maptile[0][0] = ['mea culpa']
+//Data section end
 function refInv(){
   for (var i = 0; i < player.inv.length ; i++) {
     document.getElementById('Slot'+ i).innerHTML = player.inv[i];
@@ -116,40 +118,36 @@ function newGame(){
     document.getElementById('Slot'+ i).innerHTML = player.inv[i];
   }
   //resetting the map:
- for (var x = 0; x < game.maptile.length; x++) {
-   for (var y = 0; y < game.maptile[x].length; y++) {
-     game.maptile[x][y] = [];
-   }
- }
- game.maptile[0][0] = ["dark cave","Rat","Potion"];
- game.x = 0;
- game.y = 0;
- game.encounter = true;
- game.enemy = "Rat";
- game.enemyHp = 10;
- game.logHistory = [];
- addToLog('You startle awake, just as a rat is about to bite down on you.');
- addToLog('Fumbling around, your hand lands on the handle of a knife.');
- addToLog('picking the knife up you prepare to defend yourself!');
+  maptile.length = 1;
+  maptile[0].length = 1;
+  maptile[0][0] = ["dark cave","Rat","Potion"];
+  game.x = 0;
+  game.y = 0;
+  game.encounter = true;
+  game.enemy = "Rat";
+  game.enemyHp = 10;
+  game.logHistory.lenght = 0;
+  addToLog('You startle awake, just as a rat is about to bite down on you.');
+  addToLog('Fumbling around, your hand lands on the handle of a knife.');
+  addToLog('picking the knife up you prepare to defend yourself!');
 }
-
-// log output to screen:
 //adding new log entries:
 function addToLog(newLogEntry){
-  var logString = '';
-  game.logHistory.push( '<p>' + newLogEntry + '</p>');
-  if(game.logHistory.length > 20){
-  game.logHistory.shift();
-  }
-  for(i = 0; game.logHistory.length > i; i++){
-  logString = logString + game.logHistory[i];
-  }
-  document.getElementById('log').innerHTML = logString;
+    var logString = '';
+    game.logHistory.push( '<p>' + newLogEntry + '</p>');
+    if(game.logHistory.length > 20){
+    game.logHistory.shift();
+    }
+    for(i = 0; game.logHistory.length > i; i++){
+    logString = logString + game.logHistory[i];
+    }
+    // log output to screen:
+    document.getElementById('log').innerHTML = logString;
 }
 // dead players can't act.
 var pIsDead = function(){
-addToLog('You are dead, Start a new game if you want to play.');
-newGame();
+  alert('You are dead, Starting a new game')
+  newGame();
 }
 // Setting up an encounter.
 var encounterEvent = function(){
@@ -158,7 +156,36 @@ var encounterEvent = function(){
   game.encounter = true;
   addToLog('A' + ' ' + game.enemy + ' ' + 'looks at you menacingly. You draw your' + ' ' + player.pWpn + ' ' + 'and prepare for combat');
 }
-// resolving Combat
+// dumping some treasure Yo!
+var treasureEvent = function(){
+  var lootItem;
+  if (d10 == 10) {
+      var lootItem = itemTable.index[Math.floor(Math.random() * itemTable.index.length)];
+  }
+  else {
+    if (Math.floor(Math.random() * 2) == 2){lootItem = 'Potion';}
+    else {lootItem = 'Torch';}
+  }
+  var ground = maptile[game.x][game.y];
+  ground.push(lootItem)
+}
+// Making a maptile if needed:
+function maketile(){
+if (typeof(maptile[game.x]) === 'undefined'){
+  maptile[game.x] = [game.x];
+  maptile[game.x][game.y] = [game.y];
+  maptile[game.x][game.y][0] = ["Dark Cave"];
+  if (d10() > 9) {encounterEvent();}
+  if (d10() > 1) {treasureEvent();}
+ }
+else if (typeof(maptile[game.x][game.y]) === 'undefined'){
+  maptile[game.x][game.y] = [game.y];
+  maptile[game.x][game.y][0] = ["Dark Cave"];
+  if (d10() > 9) {encounterEvent();}
+  if (d10() == 1) {treasureEvent();}
+  }
+}
+// Combat section
 //Roll the dice.
 var d10 = function(){
   return Math.floor(Math.random()* 10 + 1);
@@ -172,7 +199,7 @@ var attack = function(attack,defence){
     return false;
   }
 }
-// fighting
+// resolving attacks:
 var combatRound = function(){
 //player attacks first:
   if (attack((player.pAtk + itemTable[player.pWpn].effect[1]), encTable[game.enemy].encDef)){
@@ -181,7 +208,10 @@ var combatRound = function(){
     if (game.enemyHp < 0) {
       addToLog('The enemy has died');
       game.encounter = false;
-      ground[1] = 'Dead' + ' ' + game.enemy;
+      var ground = maptile[game.x][game.y];
+      ground[ground.indexOf(game.enemy)] = '';
+      ground.push('Dead' + ' ' + game.enemy);
+      ground = ground.filter(s => s.replace(/\s+/g, '').length !== 0);
     }
     else {
       addToLog('The enemy has' + ' ' + game.enemyHp + ' ' + 'HP left.');
@@ -203,7 +233,8 @@ var combatRound = function(){
     addToLog('Enemy misses');
   }
 }
-
+// Combat section end
+// Inventory section
 // using an item from the quickslots, both in and out of combat.
 var useItem = function(slot){
   if (player.inv[slot] == '') {
@@ -220,6 +251,7 @@ var useItem = function(slot){
         break;
       case 'Light':
           addToLog(itemTable[player.inv[slot]].fText);
+          player.Torchtime = itemTable[player.inv[0]].effect[1];
           player.inv[slot] = '';
           break;
       case 'read':
@@ -239,28 +271,10 @@ var useItem = function(slot){
     document.getElementById('Slot'+ slot).innerHTML = player.inv[slot];
   }
 }
-
-// in case of combat
-var combat = function(action,option){
-  switch (action) {
-    case 'attack':
-      combatRound();
-      break;
-    case 'move':
-      runAway(option);
-      break;
-    case 'search':
-      addToLog('No time for that now');
-      break;
-    case 'use':
-      useItem(option);
-      break;
-    default:
-  }
-}
+// Inventory section end
+//game engine section:
 // running Away
 var runAway = function(direction){
-  // a bit temporary, to be replaced with something better later.
   switch (direction) {
     case 'N':
       addToLog('You ran to the north');
@@ -282,6 +296,7 @@ var runAway = function(direction){
       addToLog('This should never happen!!!');
   }
   game.encounter = false;
+  maketile();
 }
 // moving about
 var navigate = function(direction){
@@ -305,33 +320,43 @@ var navigate = function(direction){
     default:
       addToLog('This should never happen!!!');
   }
-  // maybe you get an encounter
-  if (d10() > 9) {
-    encounterEvent();
-  }
+  maketile();
 }
-
+// Looking around
 var lookAround = function(){
+  var ground = maptile[game.x][game.y];
+  if (player.Torchtime < 0) {
+    addToLog('You fumble around in the darkness')
+  }
   addToLog('You are in a' + ' ' + ground[0]);
-  addToLog('You see a:');
-  for (var i = 1; i < ground.length; i++) {
-    addToLog(ground[i]);
+  if (ground.length > 1){
+    addToLog('You see a:');
+    for (var i = 1; i < ground.length; i++) {
+      addToLog(ground[i]);
+    }
   }
 }
 
+// in case they don't want it:
 var dropItem = function(){
+  var ground = maptile[game.x][game.y];
   var slot = (prompt('What slot? (1 to 9)') - 1)
-  if (player.inv[slot] = '') {
+  console.log(slot);
+  console.log(ground);
+  if (document.getElementById('Slot'+ [slot]).innerHTML == "") {
     addToLog('Nothing to drop')
   }
   else {
-    ground.push(player.inv[slot]);
+    ground.push(document.getElementById('Slot'+ [slot]).innerHTML);
     player.inv[slot] = '';
+    // player.inv[slot] = '';
   }
   refInv()
 }
+// when they do want it.
 var takeItem = function(){
   var item = prompt('What item?');
+  var ground = maptile[game.x][game.y];
   if (ground.indexOf(item) == -1){
     addToLog('No such item found, check spelling and try again?');
   }
@@ -343,15 +368,14 @@ var takeItem = function(){
     if (player.inv[slot] == '') {
       player.inv[slot] = ground[ground.indexOf(item)];
       ground[ground.indexOf(item)] = '';
-      ground = ground.filter(s => s.replace(/\s+/g, '').length !== 0);    // I ended up cheating. not my code. ask Tor Arne on tuesday about how this crap works.
     }
     else{addToLog('Slot is full, please choose an empty slot.')}
   }
   refInv();
-
 }
-
-
+//game engine section end:
+// control section:
+//opening the actionmenu
 var isactionopen = false;
 var actions = function(option){
 switch (option) {
@@ -379,8 +403,25 @@ switch (option) {
   console.log('Nuthing happened')
   }
 }
-
-// in case of a non combat situation
+// in case we are in an encounter:
+var combat = function(action,option){
+  switch (action) {
+    case 'attack':
+      combatRound();
+      break;
+    case 'move':
+      runAway(option);
+      break;
+    case 'search':
+      addToLog('No time for that now');
+      break;
+    case 'use':
+      useItem(option);
+      break;
+    default:
+  }
+}
+// in case of a no encounter
 var noCombat = function(action,option){
   switch (action) {
     case 'move':
@@ -402,7 +443,7 @@ var noCombat = function(action,option){
     console.log('Did you press a broken button?');
   }
 }
-
+// control section end:
 // this is the "main" loop of the script.
 function PlayerInput(action,option){
   if (!player.Status) {
@@ -413,5 +454,17 @@ else if (game.encounter) {
   }
 else{
   noCombat(action,option);
+  }
+  player.Torchtime--;
+  if (d10() == 1) {
+    if (player.Torchtime < 0) {
+      addToLog('You stumble in the darkness!');
+    }
+    else if(player.Torchtime > 0 && player.Torchtime < 30){
+      addToLog('your torch is peetering out');
+    }
+    else {
+      addToLog('Yout torch flutters brightly');
+    }
   }
 }
